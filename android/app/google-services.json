@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "753722068666",
+    "project_id": "mast-1bcca",
+    "storage_bucket": "mast-1bcca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753722068666:android:8fb526492ffc1f262a3c83",
+        "android_client_info": {
+          "package_name": "com.mast.da3m"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "753722068666-fo6mueqgvr4l9oekqf1n6vgpm2oaiont.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlO8oPPeYrI4PSCMEWt_FQKXEjlACJkIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "753722068666-fo6mueqgvr4l9oekqf1n6vgpm2oaiont.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "753722068666-6e8h9pookml0t5a1cn7f2csorlcr95ik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mast.da3m"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
