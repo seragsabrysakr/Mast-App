@@ -51,16 +51,15 @@ class _LoginScreenState extends State<LoginScreen> {
             state.flowStateListener(context);
             var user = LoginCubit.get(context).userData;
             if (state is SuccessState) {
-              routeToHome();
-              // if (user?.isActive == true) {
-              //   routeToHome();
-              // } else {
-              //   WidgetsBinding.instance.addPostFrameCallback((_) =>
-              //       Navigator.of(context).pushNamedAndRemoveUntil(
-              //           AppRouter.phoneVerificationScreen,
-              //           arguments: user,
-              //           (Route<dynamic> route) => false));
-              // }
+              if (user?.isActive == true) {
+                routeToHome();
+              } else {
+                WidgetsBinding.instance.addPostFrameCallback((_) =>
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRouter.phoneVerificationScreen,
+                        arguments: user,
+                        (Route<dynamic> route) => false));
+              }
             }
           },
           builder: (context, state) {
