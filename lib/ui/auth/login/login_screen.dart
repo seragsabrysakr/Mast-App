@@ -92,6 +92,16 @@ class _LoginScreenState extends State<LoginScreen> {
             buildLogInForm(),
             buildLogInProcces(cubit),
             buildLogInFooter(),
+            TextButton(
+              onPressed: () {
+                navigateTo(AppRouter.mainScreen);
+              },
+              child: Text('الدخول كضيف',
+                  style: AppTextStyle.getBoldStyle(
+                    color: Colors.black,
+                    fontSize: 13.sp,
+                  )),
+            ),
           ],
         ),
       ),
@@ -182,7 +192,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 color: AppColors.primaryColor,
                 fontSize: 13.sp,
               )),
-        )
+        ),
+
       ],
     );
   }

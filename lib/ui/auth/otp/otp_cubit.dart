@@ -93,7 +93,7 @@ class PhoneVerificationCubit extends Cubit<FlowState> {
     _repository
         .userVerifyPhone(
           phone: phone,
-          code: code,
+          code: '999999',
         )
         .then((value) => value.fold(
               (failure) {

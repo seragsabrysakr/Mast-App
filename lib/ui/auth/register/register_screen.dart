@@ -40,8 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void routeToHome(UserModel user) {
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRouter.mainScreen,
-            // AppRouter.phoneVerificationScreen,
+            AppRouter.phoneVerificationScreen,
             arguments: user,
             (Route<dynamic> route) => false));
   }

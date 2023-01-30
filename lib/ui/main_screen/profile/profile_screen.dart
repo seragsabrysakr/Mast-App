@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:mast/app/app_assets.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_router.dart';
 import 'package:mast/app/app_validation.dart';
@@ -13,6 +14,7 @@ import 'package:mast/data/storage/local/app_prefs.dart';
 import 'package:mast/my_app.dart';
 import 'package:mast/ui/componnents/custom_button.dart';
 import 'package:mast/ui/componnents/custom_text_field.dart';
+import 'package:mast/ui/main_screen/main_screen.dart';
 import 'package:mast/ui/main_screen/profile/country.dart';
 import 'package:mast/ui/main_screen/profile/profile_cubit.dart';
 
@@ -74,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: IntlPhoneField(
           controller: phoneController,
           showDropdownIcon: false,
-          enabled: true,
+          enabled: false,
           initialCountryCode: Constants.initialCountry,
           disableLengthCheck: false,
           flagsButtonMargin: EdgeInsets.symmetric(horizontal: 5.w),
@@ -187,9 +189,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset(
-            'assets/images/no_user.png',
+            AppAssets.appLogo,
             width: 100.w,
-            height: 100.h,
+            height: 30.h,
+            scale: .3,
           ),
           SizedBox(
             height: 10.h,
@@ -199,17 +202,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: AppTextStyle.getRegularStyle(
                 color: AppColors.primaryColor, fontSize: 15.sp),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, AppRouter.loginScreen);
+              navigateTo( AppRouter.loginScreen);
             },
             child: Text(
               'تسجيل الدخول',
               style: AppTextStyle.getRegularStyle(
-                  color: AppColors.primaryColor, fontSize: 15.sp),
+                  color: Colors.black, fontSize: 15.sp),
             ),
           ),
         ],
@@ -283,7 +283,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-
+  void navigateTo(String route, {Object? arguments}) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(MainScreen.mainContext,)
+        .pushNamedAndRemoveUntil(
+        route, arguments: arguments, (Route<dynamic> route) => false));
+  }
   _profileFooter(ProfileCubit profileCubit, BuildContext context) {
     return Column(
       children: [
@@ -298,11 +302,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           txtcolor: Colors.black,
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
-            ProfileCubit.get(context).updateProfile(
-              nameController.text,
-              countryCode.isEmpty ? userModel?.phone ?? '' : countryCode,
-              emailController.text,
-            );
+            // ProfileCubit.get(context).updateProfile(
+            //   nameController.text,
+            //   countryCode.isEmpty ? userModel?.phone ?? '' : countryCode,
+            //   emailController.text,
+            // );
           },
           fontsize: 12.sp,
           text: MyApp.tr.save,

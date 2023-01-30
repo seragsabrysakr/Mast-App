@@ -10,27 +10,11 @@ part 'home_api_service.g.dart';
 abstract class HomeServiceClient {
   factory HomeServiceClient(Dio dio, {String baseUrl}) = _HomeServiceClient;
 
-  @MultiPart()
-  @POST(ApiUrls.viewStores)
-  Future<BaseResponse<StoreModel>> login({
-    @Part(name: 'email') required String email,
-    @Part(name: 'password') required String password,
-    @Part(name: 'fcm_token') required String fireBaseToken,
-  });
 
-  // @MultiPart()
-  // @POST(ApiUrls.register)
-  // Future<BaseResponse<UserModel>> register({
-  //   @Part(name: 'email') required String email,
-  //   @Part(name: 'password') required String password,
-  //   @Part(name: 'name') required String name,
-  //   @Part(name: 'phone') required String phone,
-  //   @Part(name: 'fcm_token') required String fireBaseToken,
-  // });
-  // @MultiPart()
-  // @POST(ApiUrls.userVerifyPhone)
-  // Future<BaseResponse<UserModel>> userVerifyPhone({
-  //   @Part(name: 'phone') required String phone,
-  //   @Part(name: 'otp') required String code,
-  // });
+  @GET(ApiUrls.viewStores)
+  Future<BaseResponse<List<StoreModel>>> viewStores({
+    @Query('skip') int? skip,
+    @Query('take') int? take,
+    @Query('title') String? title,
+  });
 }

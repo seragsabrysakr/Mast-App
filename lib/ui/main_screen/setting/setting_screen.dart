@@ -3,6 +3,7 @@ import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_router.dart';
 import 'package:mast/app/di/di.dart';
 import 'package:mast/app/extensions.dart';
+import 'package:mast/app/fuctions.dart';
 import 'package:mast/data/storage/local/app_prefs.dart';
 import 'package:mast/ui/main_screen/main_screen.dart';
 
@@ -116,7 +117,8 @@ class _SettingScreenState extends State<SettingScreen> {
 
   _logout(context) {
     getIt<AppPreferences>().isUserLogin = false;
-    getIt<AppPreferences>().remove('userData');
+    getIt<AppPreferences>().remove('token');
+    dPrint(getIt<AppPreferences>().token);
     WidgetsBinding.instance.addPostFrameCallback((_) =>
         Navigator.pushNamedAndRemoveUntil(
             MainScreen.mainContext, AppRouter.loginScreen, (route) => false));

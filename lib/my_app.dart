@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mast/app/app_colors.dart';
+import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
 
 import 'app/app_router.dart';
 import 'app/di/di.dart';
@@ -19,13 +20,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<AppCubit>()),
+        BlocProvider(create: (context) => getIt<GetStoresCubit>()),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, local) {
           var cubit = context.read<AppCubit>();
           _systemOverLay();
           return MaterialApp(
-            theme: ThemeData(primarySwatch: Colors.green),
+            theme: ThemeData(
+                useMaterial3: true,
+                primarySwatch: Colors.green),
             useInheritedMediaQuery: true,
             debugShowCheckedModeBanner: false,
             // theme: Styles.themeData(false),
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
               appContext = context;
               isDark = cubit.isDark;
               tr = AppLocalizations.of(context)!;
-              return tr.appTitle;
+              return 'Mast';
             },
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,

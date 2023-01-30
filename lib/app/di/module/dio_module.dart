@@ -37,6 +37,7 @@ extension DioHeader on Dio {
     Map<String, String> headers = {
       contentType: applicationJson,
       accept: applicationJson,
+      if(token.isNotEmpty)
       authorization: "Bearer $token",
       acceptLanguage: preferences.lang,
     };
