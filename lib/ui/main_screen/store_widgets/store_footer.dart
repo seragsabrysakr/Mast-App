@@ -19,7 +19,7 @@ class StoreFooter extends StatelessWidget {
       children: [
         AppSizedBox.h2,
         RatingBarIndicator(
-          rating: 0,
+          rating: store.avgRating?.toDouble() ?? 0,
           itemBuilder: (context, index) => const Icon(
             Icons.star,
             color: Colors.yellow,

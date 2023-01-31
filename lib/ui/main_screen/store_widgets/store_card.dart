@@ -37,9 +37,12 @@ class _StoreCardState extends State<StoreCard> {
         contentMarginTop: 7.h,
         imageProvider: Image.network(store.image??'').image,
         title:  StoreTitle(title: store.title??'', color: Colors.white),
-        description:  StoreDescription(
-            description:store.description??'',
-            color: Colors.white),
+        description:  SizedBox(
+          height: 10.h,
+          child: StoreDescription(
+              description:store.description??'',
+              color: Colors.white),
+        ),
         footer:  StoreFooter(store: store,),
       ),
     );

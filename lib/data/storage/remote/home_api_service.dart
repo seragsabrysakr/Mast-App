@@ -10,9 +10,20 @@ part 'home_api_service.g.dart';
 abstract class HomeServiceClient {
   factory HomeServiceClient(Dio dio, {String baseUrl}) = _HomeServiceClient;
 
-
   @GET(ApiUrls.viewStores)
   Future<BaseResponse<List<StoreModel>>> viewStores({
+    @Query('skip') int? skip,
+    @Query('take') int? take,
+    @Query('title') String? title,
+  });
+
+  @GET(ApiUrls.viewTopRated)
+  Future<BaseResponse<List<StoreModel>>> viewTopRated({
+    @Query('skip') int? skip,
+    @Query('take') int? take,
+    @Query('title') String? title,
+  }); @GET(ApiUrls.viewSpecial)
+  Future<BaseResponse<List<StoreModel>>> viewSpecial({
     @Query('skip') int? skip,
     @Query('take') int? take,
     @Query('title') String? title,

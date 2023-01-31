@@ -23,23 +23,26 @@ class HomeRepository {
   final SafeApi safeApi;
   final AppPreferences appPreferences;
 
-  HomeRepository(
-    this._appServiceClient,
-    this.safeApi,
-    this.appPreferences,
-  );
+  HomeRepository(this._appServiceClient, this.safeApi, this.appPreferences);
 
-  Future<Either<Failure, BaseResponse<List<StoreModel>>>> viewStores({
-    int? skip,
-    int? take,
-    String? title,
-  }) async {
-    Future<Either<Failure, BaseResponse<List<StoreModel>>>> data = safeApi.call(
-        apiCall: _appServiceClient.viewStores(
-      skip: skip,
-      take: take,
-      title: title,
-    ));
+  Future<Either<Failure, BaseResponse<List<StoreModel>>>> viewStores(
+      {int? skip, int? take, String? title}) async {
+    Future<Either<Failure, BaseResponse<List<StoreModel>>>> data =
+        safeApi.call(apiCall: _appServiceClient.viewStores(skip: skip, take: take, title: title));
+    return data;
+  }
+
+  Future<Either<Failure, BaseResponse<List<StoreModel>>>> viewTopRated(
+      {int? skip, int? take, String? title}) async {
+    Future<Either<Failure, BaseResponse<List<StoreModel>>>> data =
+        safeApi.call(apiCall: _appServiceClient.viewTopRated(skip: skip, take: take, title: title));
+    return data;
+  }
+
+  Future<Either<Failure, BaseResponse<List<StoreModel>>>> viewSpecial(
+      {int? skip, int? take, String? title}) async {
+    Future<Either<Failure, BaseResponse<List<StoreModel>>>> data =
+        safeApi.call(apiCall: _appServiceClient.viewSpecial(skip: skip, take: take, title: title));
     return data;
   }
 }

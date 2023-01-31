@@ -6,4 +6,6 @@ class ApiUrls {
   static const userVerifyPhone = "/auth/verify";
   static const logOut = "/auth/logout";
   static const viewStores = "/branches/view";
+  static const viewTopRated = "/branches/topRated";
+  static const viewSpecial = "/branches/special";
 }

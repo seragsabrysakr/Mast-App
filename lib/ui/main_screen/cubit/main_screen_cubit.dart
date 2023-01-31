@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/text_style.dart';
 import 'package:mast/ui/main_screen/home/home_screen.dart';
-import 'package:mast/ui/main_screen/notification/all_stores.dart';
+import 'package:mast/ui/main_screen/allstores/all_stores.dart';
 import 'package:mast/ui/main_screen/profile/profile_screen.dart';
 import 'package:mast/ui/main_screen/setting/setting_screen.dart';
 
@@ -56,7 +56,7 @@ class MainScreenCubit extends Cubit<MainScreenState> {
   List<Widget> screens = [
     HomeScreen(),
     const ProfileScreen(),
-    const NotificationScreen(),
+    const AllStoresScreen(),
     const SettingScreen(),
   ];
   List<String> titles = [

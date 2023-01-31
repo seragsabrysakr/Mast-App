@@ -48,7 +48,7 @@ class AppShow{
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                  color: Colors.red.shade100,
+                  color: Colors.grey.shade100,
                   blurRadius: 8,
                   offset: const Offset(2, 5), // Shadow position
                 ),
@@ -56,7 +56,7 @@ class AppShow{
               borderRadius: BorderRadius.circular(1.h),
               image: DecorationImage(
                   image: AssetImage(placeHolder ?? AppAssets.appLogo),
-                  fit:fit?? BoxFit.cover),
+                  fit:fit?? BoxFit.contain),
             ),
             height: height,
             width: width,
@@ -66,7 +66,7 @@ class AppShow{
               borderRadius: BorderRadius.circular(1.h),
               image: DecorationImage(
                   image: AssetImage(placeHolder ?? AppAssets.appLogo),
-                  fit:fit?? BoxFit.cover),
+                  fit:fit?? BoxFit.contain),
             ),
             height: height,
             width: width,
