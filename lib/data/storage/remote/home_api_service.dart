@@ -22,10 +22,19 @@ abstract class HomeServiceClient {
     @Query('skip') int? skip,
     @Query('take') int? take,
     @Query('title') String? title,
-  }); @GET(ApiUrls.viewSpecial)
+  });
+
+  @GET(ApiUrls.viewSpecial)
   Future<BaseResponse<List<StoreModel>>> viewSpecial({
     @Query('skip') int? skip,
     @Query('take') int? take,
     @Query('title') String? title,
+  });
+  @MultiPart()
+  @POST(ApiUrls.addRating)
+  Future<BaseResponse<String>> addRating({
+    @Part(name: 'shop_id') required String shopId,
+    @Part(name: 'comment') required String comment,
+    @Part(name: 'shop_rating') required String shopRating,
   });
 }

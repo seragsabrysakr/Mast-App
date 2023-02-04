@@ -7,7 +7,6 @@ import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_sized_box.dart';
 import 'package:mast/app/di/di.dart';
 import 'package:mast/app/extensions.dart';
-import 'package:mast/app/state_renderer/request_builder.dart';
 import 'package:mast/app/state_renderer/state_renderer.dart';
 import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
@@ -15,13 +14,10 @@ import 'package:mast/data/model/home/store_model.dart';
 import 'package:mast/data/request/store_request.dart';
 import 'package:mast/ui/componnents/app_show.dart';
 import 'package:mast/ui/componnents/custom_button.dart';
-import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
 import 'package:mast/ui/main_screen/allstores/serach.dart';
-import 'package:mast/ui/main_screen/store_widgets/store_card.dart';
-import 'package:mast/ui/main_screen/store_widgets/store_description.dart';
+import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
+import 'package:mast/ui/main_screen/store_widgets/rating/rating_view.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_details.dart';
-import 'package:mast/ui/main_screen/store_widgets/store_footer.dart';
-import 'package:mast/ui/main_screen/store_widgets/store_title.dart';
 
 class AllRecentScreen extends StatefulWidget {
   const AllRecentScreen({super.key});
@@ -60,6 +56,15 @@ class _AllRecentScreenState extends State<AllRecentScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.blackColor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           backgroundColor: AppColors.primaryColor,
           elevation: 0,
           title: Text(
@@ -129,23 +134,23 @@ class _AllRecentScreenState extends State<AllRecentScreen> {
 
   StateRenderer emptyView(BuildContext context) {
     return StateRenderer(
-        message: 'لا يوجد متاجر',
-        stateRendererType: StateRendererType.fullScreenErrorState,
-        retryActionFunction: () {
-          setState(() {
-            request = StoreRequest(
-              title: searchController.text,
-              take: pageSize,
-            );
-          });
-          _pagingController.refresh();
-          FocusScope.of(context).unfocus();
-        },
-        maxContentHeight: null,
-      );
+      message: 'لا يوجد متاجر',
+      stateRendererType: StateRendererType.fullScreenErrorState,
+      retryActionFunction: () {
+        setState(() {
+          request = StoreRequest(
+            title: searchController.text,
+            take: pageSize,
+          );
+        });
+        _pagingController.refresh();
+        FocusScope.of(context).unfocus();
+      },
+      maxContentHeight: null,
+    );
   }
 
-   storeItem(StoreModel item) {
+  storeItem(StoreModel item) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -159,68 +164,68 @@ class _AllRecentScreenState extends State<AllRecentScreen> {
           ),
         ],
       ),
-
       child: FillImageCard(
-          heightImage:13.h,
-          width: 45.w,
-          imageProvider: Image.network(
-            item.image ?? '',
-            fit: BoxFit.contain,
-          ).image,
-          title: storeTitle(item),
-          footer: Column(
-            children: [
-              AppSizedBox.h1,
-              RatingBarIndicator(
-                rating: item.avgRating?.toDouble() ?? 0,
-                itemBuilder: (context, index) => const Icon(
-                  Icons.star,
-                  color: Colors.yellow,
+        heightImage: 13.h,
+        width: 45.w,
+        imageProvider: Image.network(
+          item.image ?? '',
+          fit: BoxFit.contain,
+        ).image,
+        title: storeTitle(item),
+        footer: Column(
+          children: [
+            AppSizedBox.h1,
+            RatingBarIndicator(
+              rating: item.avgRating?.toDouble() ?? 0,
+              itemBuilder: (context, index) => const Icon(
+                Icons.star,
+                color: Colors.yellow,
+              ),
+              unratedColor: Colors.grey,
+              itemCount: 5,
+              itemSize: 15.sp,
+              direction: Axis.horizontal,
+            ),
+            AppSizedBox.h1,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomButton(
+                  width: 18,
+                  height: 5,
+                  radius: 1,
+                  fontsize: 9.sp,
+                  txtcolor: Colors.black,
+                  text: 'تفاصيل ',
+                  onTap: () {
+                    AppShow.animationDialog(context, StoreDetails(store: item));
+                  },
                 ),
-                unratedColor: Colors.grey,
-                itemCount: 5,
-                itemSize: 15.sp,
-                direction: Axis.horizontal,
-              ),
-              AppSizedBox.h1,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  CustomButton(
-                    width: 18,
-                    height: 5,
-                    radius: 1,
-                    fontsize: 9.sp,
-
-                    txtcolor: Colors.black,
-                    text: 'تفاصيل ',
-                    onTap: () {
-                      AppShow.animationDialog(context, StoreDetails(store: item));
-                    },
-                  ),
-                  CustomButton(
-                    width: 18,
-                    height: 5,
-                    radius: 1,
-                    fontsize: 9.sp,
-                    txtcolor: Colors.black,
-                    text: 'أضف تقييما',
-                    onTap: () {},
-                  ),
-                ],
-              ),
-            ],
-          ),
+                CustomButton(
+                  width: 18,
+                  height: 5,
+                  radius: 1,
+                  fontsize: 9.sp,
+                  txtcolor: Colors.black,
+                  text: 'أضف تقييما',
+                  onTap: () {
+                    AppShow.animationDialog(context, AddProductReviewScreen(store: item));
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
     );
   }
 
-   storeTitle(StoreModel item) {
+  storeTitle(StoreModel item) {
     return Center(
       child: Text(
-          item.title ?? '',
-          style: AppTextStyle.getBoldStyle(color: Colors.black, fontSize: 12.sp),
-        ),
+        item.title ?? '',
+        style: AppTextStyle.getBoldStyle(color: Colors.black, fontSize: 12.sp),
+      ),
     );
   }
 

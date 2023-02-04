@@ -1,21 +1,12 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:mast/app/constants.dart';
-import 'package:mast/app/di/module/dio_module.dart';
-import 'package:mast/app/fuctions.dart';
-import 'package:mast/data/model/auth/user_model.dart';
 import 'package:mast/data/model/base_response.dart';
 import 'package:mast/data/model/home/store_model.dart';
-import 'package:mast/data/request/register_request.dart';
 import 'package:mast/data/storage/remote/home_api_service.dart';
 
-import '../app/di/di.dart';
 import '../app/network/error_handler.dart';
 import '../app/network/save_api.dart';
-import '../data/request/login_request.dart';
 import '../data/storage/local/app_prefs.dart';
-import '../data/storage/remote/auth_api_service.dart';
 
 @injectable
 class HomeRepository {
@@ -43,6 +34,17 @@ class HomeRepository {
       {int? skip, int? take, String? title}) async {
     Future<Either<Failure, BaseResponse<List<StoreModel>>>> data =
         safeApi.call(apiCall: _appServiceClient.viewSpecial(skip: skip, take: take, title: title));
+    return data;
+  }
+
+  Future<Either<Failure, BaseResponse<String>>> addRating({
+    required String comment,
+    required String shopRating,
+    required String shopId,
+  }) async {
+    Future<Either<Failure, BaseResponse<String>>> data = safeApi.call(
+        apiCall:
+            _appServiceClient.addRating(comment: comment, shopRating: shopRating, shopId: shopId));
     return data;
   }
 }

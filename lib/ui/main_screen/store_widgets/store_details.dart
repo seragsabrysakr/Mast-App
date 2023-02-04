@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mast/app/app_colors.dart';
@@ -21,6 +19,15 @@ class StoreDetails extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.primaryColor,
           centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: AppColors.blackColor,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           title: Text(
             store.title ?? '',
             style: AppTextStyle.getBoldStyle(color: Colors.black),
@@ -76,7 +83,6 @@ class StoreDetails extends StatelessWidget {
                   ),
                 ),
                 AppSizedBox.h1,
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -97,28 +103,31 @@ class StoreDetails extends StatelessWidget {
                         ),
                         AppSizedBox.h1,
                         Text(
-                          '(${int.parse(store.ratingCount.toString())})',
+                          '(${store.ratings?.length.toString()})',
                           style: AppTextStyle.getRegularStyle(color: Colors.grey),
                         ),
                       ],
                     ),
+                    TextButton(
+                        onPressed: () async {
+                          AppShow.animationDialog(
+                            context,
+                            buildRatingList(context),
+                          );
+                        },
+                        child: Text(
+                          'عرض التقييمات',
+                          style: AppTextStyle.getRegularStyle(color: Colors.blue),
+                        ))
                   ],
                 ),
                 AppSizedBox.h1,
-                SizedBox(
-                  height: ((store.ratings?.length??0) * 8.2).h,
-                  child: ListView.separated(
-                    itemBuilder: (context, index) => buildRate(store.ratings?[index]),
-                    separatorBuilder: (context, index) => AppSizedBox.h1,
-                    itemCount: store.ratings?.length ?? 0,
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     buildChip('زيارة صفحة المتجر'),
                     TextButton(
-                        onPressed: ()async {
+                        onPressed: () async {
                           await _launchInBrowser(store.url ?? '');
                         },
                         child: Text(
@@ -131,6 +140,43 @@ class StoreDetails extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  buildRatingList(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
+        title: Text(
+          'عرض التقييمات',
+          style: AppTextStyle.getBoldStyle(color: Colors.black),
+        ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppColors.blackColor,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            AppSizedBox.h3,
+            SizedBox(
+              height: ((store.ratings?.length ?? 0) * 10).h,
+              child: ListView.separated(
+                itemBuilder: (context, index) => buildRate(store.ratings?[index]),
+                separatorBuilder: (context, index) => AppSizedBox.h1,
+                itemCount: store.ratings?.length ?? 0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Container buildRate(Rating? ratings) {
@@ -149,7 +195,7 @@ class StoreDetails extends StatelessWidget {
             style: AppTextStyle.getRegularStyle(color: Colors.grey),
           ),
           RatingBarIndicator(
-            rating: double.parse(ratings?.rating?.toString() ?? '0.0') ?? 0,
+            rating: double.parse(ratings?.rating?.toString() ?? '0.0'),
             itemBuilder: (context, index) => const Icon(
               Icons.star,
               color: Colors.yellow,
@@ -172,6 +218,7 @@ class StoreDetails extends StatelessWidget {
           style: AppTextStyle.getRegularStyle(color: Colors.black),
         ));
   }
+
   Future<void> _launchInBrowser(String url) async {
     final UrlLauncherPlatform launcher = UrlLauncherPlatform.instance;
     if (await launcher.canLaunch(url)) {
@@ -188,5 +235,4 @@ class StoreDetails extends StatelessWidget {
       throw Exception('Could not launch $url');
     }
   }
-
 }

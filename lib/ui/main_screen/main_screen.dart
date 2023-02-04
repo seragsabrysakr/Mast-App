@@ -5,11 +5,14 @@ import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_router.dart';
 import 'package:mast/app/extensions.dart';
 import 'package:mast/app/text_style.dart';
+import 'package:mast/ui/componnents/app_show.dart';
 import 'package:mast/ui/main_screen/cubit/main_screen_cubit.dart';
+import 'package:mast/ui/main_screen/store_widgets/add_store/add_store_view.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 class MainScreen extends StatefulWidget {
   static late BuildContext mainContext;
+
   const MainScreen({super.key});
 
   @override
@@ -57,10 +60,40 @@ class _MainScreenState extends State<MainScreen> {
                   backgroundColor: Colors.yellow,
                   centerTitle: true,
                   toolbarHeight: 6.h,
+                  actions: [
+                    FilledButton.icon(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                            EdgeInsets.symmetric(horizontal: 4.w)),
+                        elevation:
+                            MaterialStateProperty.resolveWith<double>((Set<MaterialState> states) {
+                          if (states.contains(MaterialState.pressed)) {
+                            return 0;
+                          }
+                          if (states.contains(MaterialState.focused)) {
+                            return 0;
+                          }
+                          if (states.contains(MaterialState.hovered)) {
+                            return 0;
+                          }
+                          return 0;
+                        }),
+                      ),
+                      icon: const Icon(Icons.add, color: AppColors.blackColor),
+                      onPressed: () {
+                        AppShow.animationDialog(context, const AddStoreScreen());
+                      },
+                      label: Text(
+                        'أضف متجر',
+                        style:
+                            AppTextStyle.getBoldStyle(color: AppColors.blackColor, fontSize: 12.sp),
+                      ),
+                    )
+                  ],
                   title: Text(
                     cubit.titles[cubit.selectedIndex],
-                    style: AppTextStyle.getBoldStyle(
-                        color: AppColors.blackColor, fontSize: 12.sp),
+                    style: AppTextStyle.getBoldStyle(color: AppColors.blackColor, fontSize: 12.sp),
                   ),
                 ),
                 body: PersistentTabView(
@@ -74,13 +107,16 @@ class _MainScreenState extends State<MainScreen> {
                     });
                   },
                   confineInSafeArea: true,
-                  backgroundColor: Colors.white, // Default is Colors.white.
-                  handleAndroidBackButtonPress: true, // Default is true.
-                  resizeToAvoidBottomInset:
-                      true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-                  stateManagement: true, // Default is true.
-                  hideNavigationBarWhenKeyboardShows:
-                      true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+                  backgroundColor: Colors.white,
+                  // Default is Colors.white.
+                  handleAndroidBackButtonPress: true,
+                  // Default is true.
+                  resizeToAvoidBottomInset: true,
+                  // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+                  stateManagement: true,
+                  // Default is true.
+                  hideNavigationBarWhenKeyboardShows: true,
+                  // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
                   decoration: NavBarDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     colorBehindNavBar: Colors.white,
@@ -98,8 +134,8 @@ class _MainScreenState extends State<MainScreen> {
                     curve: Curves.ease,
                     duration: Duration(milliseconds: 100),
                   ),
-                  navBarStyle: NavBarStyle
-                      .neumorphic, // Choose the nav bar style with this property.
+                  navBarStyle:
+                      NavBarStyle.neumorphic, // Choose the nav bar style with this property.
                 ));
           },
         ));

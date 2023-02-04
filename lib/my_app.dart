@@ -27,9 +27,7 @@ class MyApp extends StatelessWidget {
           var cubit = context.read<AppCubit>();
           _systemOverLay();
           return MaterialApp(
-            theme: ThemeData(
-                useMaterial3: true,
-                primarySwatch: Colors.green),
+            theme: ThemeData(useMaterial3: true, primarySwatch: Colors.green),
             useInheritedMediaQuery: true,
             debugShowCheckedModeBanner: false,
             // theme: Styles.themeData(false),
