@@ -9,4 +9,5 @@ class ApiUrls {
   static const viewTopRated = "/branches/topRated";
   static const viewSpecial = "/branches/special";
   static const addRating = "/branches/addRating";
+  static const addStore = "/branches/create";
 }

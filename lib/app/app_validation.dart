@@ -2,8 +2,7 @@ import 'package:mast/my_app.dart';
 
 class Validations {
   static String? emailValidation(String? value) {
-    String pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+    String pattern = r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
         r"{0,253}[a-zA-Z0-9])?)*$";
     RegExp regex = RegExp(pattern);
@@ -20,15 +19,33 @@ class Validations {
     }
   }
 
+  static String? descriptionValidation(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'يرجي ادخال الوصف';
+    } else {
+      return null;
+    }
+  }
+
+  static String? urlValidation(String value) {
+    String pattern =
+        r'(http|https)://[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:/~+#-]*[\w@?^=%&amp;/~+#-])?';
+    RegExp regExp = RegExp(pattern);
+    if (value.isEmpty) {
+      return 'يرجي ادخال رابط المتجر';
+    } else if (!regExp.hasMatch(value)) {
+      return 'رابط المتجر غير صحيح';
+    }
+    return null;
+  }
+
   static bool isEmailValid(String? email) {
-    return RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+    return RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email ?? '');
   }
 
   static bool isPhoneValid(String? input) =>
-      RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$')
-          .hasMatch(input ?? '');
+      RegExp(r'^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$').hasMatch(input ?? '');
 
   static String? passwordValidation(String? value) {
     // RegExp regex =

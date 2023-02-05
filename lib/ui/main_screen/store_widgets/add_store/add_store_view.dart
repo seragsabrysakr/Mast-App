@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mast/app/app_assets.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_sized_box.dart';
@@ -12,9 +10,9 @@ import 'package:mast/app/helpers/image_helper.dart';
 import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
 import 'package:mast/my_app.dart';
-import 'package:mast/ui/auth/register/register_cubit.dart';
 import 'package:mast/ui/componnents/custom_button.dart';
 import 'package:mast/ui/componnents/custom_text_field.dart';
+import 'package:mast/ui/main_screen/store_widgets/add_store/add_store_cubit.dart';
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
@@ -31,7 +29,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var urlController = TextEditingController();
-  String initialType = 'محل';
+  String initialType = '1';
   List<String> types = ['محل', 'متجر الكتروني'];
   final _formKey = GlobalKey<FormState>();
 
@@ -58,13 +56,17 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => getIt<RegisterCubit>(),
-        child: BlocConsumer<RegisterCubit, FlowState>(
+        create: (context) => getIt<AddStoresCubit>(),
+        child: BlocConsumer<AddStoresCubit, FlowState>(
           listener: (context, state) {
+            bool isSuccess = state is SuccessState;
+            if (isSuccess) {
+              Navigator.pop(context);
+            }
             state.flowStateListener(context);
           },
           builder: (context, state) {
-            var cubit = RegisterCubit.get(context);
+            var cubit = AddStoresCubit.get(context);
             bool isSuccess = state is SuccessState;
             return state.flowStateBuilder(context,
                 screenContent: isSuccess ? const SizedBox() : buildScreenContent(cubit), retry: () {
@@ -85,7 +87,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   //   );
   // }
 
-  SingleChildScrollView buildScreenContent(RegisterCubit cubit) {
+  SingleChildScrollView buildScreenContent(AddStoresCubit cubit) {
     return SingleChildScrollView(
       child: Form(
         key: _formKey,
@@ -112,8 +114,38 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
               ),
             ),
             btn1(context),
-            // buildRegisterForm(cubit),
-            // buildRegisterButton(cubit),
+            AppSizedBox.h4,
+            buildRegisterForm(cubit),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomButton(
+                    height: 6.3,
+                    width: 30,
+                    text: 'محل',
+                    onTap: () {
+                      setState(() {
+                        initialType = '1';
+                      });
+                    },
+                    txtcolor: initialType == '1' ? Colors.black : Colors.white,
+                    borderColor: initialType == '1' ? Colors.yellow : Colors.grey,
+                    butcolor: initialType == '1' ? Colors.yellow : Colors.grey),
+                CustomButton(
+                    height: 6.3,
+                    width: 30,
+                    text: 'متجر الكتروني',
+                    onTap: () {
+                      setState(() {
+                        initialType = '2';
+                      });
+                    },
+                    txtcolor: initialType == '2' ? Colors.black : Colors.white,
+                    borderColor: initialType == '2' ? Colors.yellow : Colors.grey,
+                    butcolor: initialType == '2' ? Colors.yellow : Colors.grey),
+              ],
+            ),
+            buildRegisterButton(cubit),
           ],
         ),
       ),
@@ -123,12 +155,11 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
   Widget btn1(BuildContext context) {
     return MaterialButton(
       color: Colors.grey[300],
-      minWidth: 300,
+      minWidth: 40.w,
       onPressed: () => Dialogs.materialDialog(
           title: "اختر صوره المتجر",
           color: Colors.white,
           context: context,
-          dialogWidth: kIsWeb ? 0.3 : null,
           onClose: (value) => print("returned value is '$value'"),
           actions: [
             IconsButton(
@@ -158,18 +189,26 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
     );
   }
 
-  Column buildRegisterButton(RegisterCubit cubit) {
+  Column buildRegisterButton(AddStoresCubit cubit) {
     return Column(
       children: [
         AppSizedBox.h4,
         CustomButton(
-          text: MyApp.tr.newAccount,
+          text: 'تأكيد',
           fontsize: 14.sp,
           txtcolor: Colors.black,
-          icon: SvgPicture.asset(AppAssets.icNext, color: Colors.black),
           onTap: () {
-            if (_formKey.currentState!.validate()) {
-              // registerAction(cubit);
+            if (DocumentHelper.pickedImage == null) {
+              showErrorToast(context);
+            } else {
+              if (_formKey.currentState!.validate()) {
+                cubit.addStores(
+                    image: DocumentHelper.pickedImage!,
+                    title: titleController.text,
+                    description: descriptionController.text,
+                    url: urlController.text,
+                    type: initialType);
+              }
             }
           },
         ),
@@ -196,7 +235,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
     );
   }
 
-  Column buildRegisterForm(RegisterCubit cubit) {
+  Column buildRegisterForm(AddStoresCubit cubit) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -218,8 +257,9 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
           min: 3,
           controller: descriptionController,
           hint: "الوصف",
+          radius: 4,
           validator: (String? value) {
-            return Validations.emailValidation(value);
+            return Validations.descriptionValidation(value);
           },
         ),
         CustomTextField(
@@ -228,7 +268,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
           controller: urlController,
           hint: 'رابط المتجر',
           validator: (String? value) {
-            return Validations.emailValidation(value);
+            return Validations.urlValidation(value ?? '');
           },
         ),
       ],
@@ -239,7 +279,7 @@ class _AddStoreScreenState extends State<AddStoreScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) => popDialog(
         context: context,
         title: MyApp.tr.error,
-        content: MyApp.tr.acceptOurTerms,
+        content: 'يرجي اختيار صورة المتجر',
         boxColor: AppColors.errorColor));
   }
 }

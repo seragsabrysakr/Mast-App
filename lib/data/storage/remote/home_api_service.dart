@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:mast/app/api_urls.dart';
 import 'package:mast/data/model/base_response.dart';
@@ -36,5 +38,13 @@ abstract class HomeServiceClient {
     @Part(name: 'shop_id') required String shopId,
     @Part(name: 'comment') required String comment,
     @Part(name: 'shop_rating') required String shopRating,
+  });@MultiPart()
+  @POST(ApiUrls.addStore)
+  Future<BaseResponse<List<StoreModel>>> addStore({
+    @Part(name: 'image') required File image,
+    @Part(name: 'title') required String title,
+    @Part(name: 'description') required String description,
+    @Part(name: 'url') required String url,
+    @Part(name: 'type') required String type,
   });
 }

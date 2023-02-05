@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mast/data/model/base_response.dart';
@@ -45,6 +47,17 @@ class HomeRepository {
     Future<Either<Failure, BaseResponse<String>>> data = safeApi.call(
         apiCall:
             _appServiceClient.addRating(comment: comment, shopRating: shopRating, shopId: shopId));
+    return data;
+  }Future<Either<Failure, BaseResponse<List<StoreModel>>>> addStore({
+    required File image,
+    required String title,
+    required String description,
+    required String url,
+    required String type,
+  }) async {
+    Future<Either<Failure, BaseResponse<List<StoreModel>>>> data = safeApi.call(
+        apiCall:
+            _appServiceClient.addStore(image: image, title: title, description: description, url: url, type: type));
     return data;
   }
 }
