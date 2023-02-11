@@ -2,17 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
-	<key>CFBundleURLTypes</key>
-           <array>
-               <dict>
-                   <key>CFBundleTypeRole</key>
-                   <string>Editor</string>
-                   <key>CFBundleURLSchemes</key>
-                   <array>
-                       <string>933715358976-imu16c1i0vhtklctavq831ohbjphrvv3.apps.googleusercontent.com</string>
-                   </array>
-               </dict>
-           </array>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleTypeRole</key>
+				<string>Editor</string>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>com.googleusercontent.apps.933715358976-imu16c1i0vhtklctavq831ohbjphrvv3</string>
+				</array>
+			</dict>
+		</array>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
@@ -38,9 +38,9 @@
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>AppNeedThisForUserInformation</string>
+		<string>This app needs use Camera for (profile - stores) photos</string>
 		<key>NSCameraUsageDescription</key>
-		<string>AppNeedThisForUserInformation</string>
+		<string>This app needs use Camera for (profile - stores) photos</string>
 		<key>UIMainStoryboardFile</key>
 		<string>Main</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
@@ -49,8 +49,6 @@
 		<string>This app needs access to location when in the background.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
 		<string>This app needs your location to test the location feature of the Google Maps plugin.</string>
-		<key>NSCameraUsageDescription</key>
-		<string>This app needs use Camera for cards scanning</string>
 		<key>UISupportedInterfaceOrientations</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>

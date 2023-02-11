@@ -1,29 +1,4 @@
-// To parse this JSON data, do
-//
-//     final storeModel = storeModelFromJson(jsonString?);
-
-import 'dart:convert';
-
-StoreModel storeModelFromJson(String? str) => StoreModel.fromJson(json.decode(str!));
-
 class StoreModel {
-  StoreModel({
-    this.id,
-    this.title,
-    this.type,
-    this.description,
-    this.isActive,
-    this.image,
-    this.url,
-    this.createdAt,
-    this.updatedAt,
-    this.special,
-    this.ratingCount,
-    this.avgRating,
-    this.userRating,
-    this.ratings,
-  });
-
   int? id;
   String? title;
   String? type;
@@ -37,52 +12,168 @@ class StoreModel {
   String? ratingCount;
   double? avgRating;
   bool? userRating;
-  List<Rating>? ratings;
+  List<Ratings>? ratings;
 
-  factory StoreModel.fromJson(Map<String?, dynamic> json) => StoreModel(
-        id: json["id"],
-        title: json["title"],
-        type: json["type"],
-        description: json["description"],
-        isActive: json["is_active"],
-        image: json["image"],
-        url: json["url"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
-        special: json["special"],
-        ratingCount: json["rating_count"],
-        avgRating: json["avgRating"] is int? ? json["avgRating"].toDouble() : json["avgRating"],
-        userRating: json["user_rating"],
-        ratings: List<Rating>.from(json["ratings"].map((x) => Rating.fromJson(x))),
-      );
+  StoreModel(
+      {this.id,
+      this.title,
+      this.type,
+      this.description,
+      this.isActive,
+      this.image,
+      this.url,
+      this.createdAt,
+      this.updatedAt,
+      this.special,
+      this.ratingCount,
+      this.avgRating,
+      this.userRating,
+      this.ratings});
+
+  StoreModel.fromJson(Map<String?, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    type = json['type'];
+    description = json['description'];
+    isActive = json['is_active'];
+    image = json['image'];
+    url = json['url'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    special = json['special'];
+    ratingCount = json['rating_count'];
+    avgRating = json['avgRating'].toDouble();
+    userRating = json['user_rating'];
+    if (json['ratings'] != null) {
+      ratings = [];
+      json['ratings'].forEach((v) {
+        ratings!.add(Ratings.fromJson(v));
+      });
+    }
+  }
+
+  Map<String?, dynamic> toJson() {
+    final Map<String?, dynamic> data = <String?, dynamic>{};
+    data['id'] = id;
+    data['title'] = title;
+    data['type'] = type;
+    data['description'] = description;
+    data['is_active'] = isActive;
+    data['image'] = image;
+    data['url'] = url;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['special'] = special;
+    data['rating_count'] = ratingCount;
+    data['avgRating'] = avgRating;
+    data['user_rating'] = userRating;
+    if (ratings != null) {
+      data['ratings'] = ratings!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class Rating {
-  Rating({
-    required this.id,
-    required this.userId,
-    required this.shopId,
-    required this.rating,
-    required this.comment,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  int id;
+class Ratings {
+  int? id;
   String? userId;
   String? shopId;
   String? rating;
   String? comment;
-  DateTime? createdAt;
-  DateTime? updatedAt;
+  String? createdAt;
+  String? updatedAt;
+  Client? client;
 
-  factory Rating.fromJson(Map<String?, dynamic> json) => Rating(
-        id: json["id"],
-        userId: json["user_id"],
-        shopId: json["shop_id"],
-        rating: json["rating"],
-        comment: json["comment"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-      );
+  Ratings(
+      {this.id,
+      this.userId,
+      this.shopId,
+      this.rating,
+      this.comment,
+      this.createdAt,
+      this.updatedAt,
+      this.client});
+
+  Ratings.fromJson(Map<String?, dynamic> json) {
+    id = json['id'];
+    userId = json['user_id'];
+    shopId = json['shop_id'];
+    rating = json['rating'];
+    comment = json['comment'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+    client = json['client'] != null ? Client.fromJson(json['client']) : null;
+  }
+
+  Map<String?, dynamic> toJson() {
+    final Map<String?, dynamic> data = <String?, dynamic>{};
+    data['id'] = id;
+    data['user_id'] = userId;
+    data['shop_id'] = shopId;
+    data['rating'] = rating;
+    data['comment'] = comment;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    if (client != null) {
+      data['client'] = client!.toJson();
+    }
+    return data;
+  }
+}
+
+class Client {
+  int? id;
+  String? name;
+  String? phone;
+  String? isActive;
+  String? image;
+  String? balance;
+  String? email;
+  String? verifyCode;
+  String? fcmToken;
+  String? createdAt;
+  String? updatedAt;
+
+  Client(
+      {this.id,
+      this.name,
+      this.phone,
+      this.isActive,
+      this.image,
+      this.balance,
+      this.email,
+      this.verifyCode,
+      this.fcmToken,
+      this.createdAt,
+      this.updatedAt});
+
+  Client.fromJson(Map<String?, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    phone = json['phone'];
+    isActive = json['is_active'];
+    image = json['image'];
+    balance = json['balance'];
+    email = json['email'];
+    verifyCode = json['verify_code'];
+    fcmToken = json['fcm_token'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String?, dynamic> toJson() {
+    final Map<String?, dynamic> data = <String?, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['phone'] = phone;
+    data['is_active'] = isActive;
+    data['image'] = image;
+    data['balance'] = balance;
+    data['email'] = email;
+    data['verify_code'] = verifyCode;
+    data['fcm_token'] = fcmToken;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
 }

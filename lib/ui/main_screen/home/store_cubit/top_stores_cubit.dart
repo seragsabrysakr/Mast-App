@@ -12,7 +12,7 @@ class TopStoresCubit extends Cubit<FlowState> {
   final HomeRepository homeRepository;
 
   TopStoresCubit(this.homeRepository)
-      : super(LoadingState(stateRendererType: StateRendererType.popupLoadingState));
+      : super(LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState));
   List<StoreModel> stores = [];
   int currentPage = 1;
 
@@ -25,7 +25,7 @@ class TopStoresCubit extends Cubit<FlowState> {
     var req = request?.copyWith(
       skip: stores.length,
     );
-    emit(LoadingState(stateRendererType: StateRendererType.popupLoadingState));
+    emit(LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState));
     Future.delayed(const Duration(seconds: 0), () {
       homeRepository
           .viewTopRated(skip: req!.skip, take: req.take, title: req.title)

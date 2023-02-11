@@ -21,7 +21,7 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-      builder: (context) => const MyApp(), // Wrap your app
+      builder: (context) =>  MyApp(), // Wrap your app
     ),
   );
 }

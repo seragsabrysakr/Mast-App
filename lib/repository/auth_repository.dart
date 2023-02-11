@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
@@ -27,8 +29,7 @@ class AuthRepository {
     this.appPreferences,
   );
 
-  Future<Either<Failure, BaseResponse<UserModel>>> login(
-      LoginRequest loginRequest) async {
+  Future<Either<Failure, BaseResponse<UserModel>>> login(LoginRequest loginRequest) async {
     Future<Either<Failure, BaseResponse<UserModel>>> data = safeApi.call(
         apiCall: _appServiceClient.login(
             email: loginRequest.email,
@@ -37,8 +38,7 @@ class AuthRepository {
     return data;
   }
 
-  Future<Either<Failure, BaseResponse<UserModel>>> register(
-      RegisterRequest request) async {
+  Future<Either<Failure, BaseResponse<UserModel>>> register(RegisterRequest request) async {
     Future<Either<Failure, BaseResponse<UserModel>>> data = safeApi.call(
         apiCall: _appServiceClient.register(
             email: request.email,
@@ -58,6 +58,26 @@ class AuthRepository {
       phone: phone,
       code: code,
     ));
+    return data;
+  }
+
+  Future<Either<Failure, BaseResponse<UserModel>>> updateProfile({
+    File? image,
+    required String email,
+    required String name,
+  }) async {
+    Future<Either<Failure, BaseResponse<UserModel>>> data = safeApi.call(
+        apiCall: _appServiceClient.updateProfile(
+      image: image,
+      email: email,
+      name: name,
+    ));
+    return data;
+  }
+
+  Future<Either<Failure, BaseResponse<String>>> deleteAcount() async {
+    Future<Either<Failure, BaseResponse<String>>> data =
+        safeApi.call(apiCall: _appServiceClient.deleteAcount());
     return data;
   }
 

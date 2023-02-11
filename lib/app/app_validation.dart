@@ -54,7 +54,7 @@ class Validations {
     if (value == null || value.isEmpty) {
       return MyApp.tr.passwordEmptyValidation;
     } else if (value.length < 8) {
-      return 'كلمة المرور يجب ان تكون اكثر من 8 احرف';
+      return ' كلمة المرور يجب ان تكون اكثر من 8 احرف او ارقام';
     } else {
       return null;
     }

@@ -3,17 +3,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mast/app/app_colors.dart';
+import 'package:mast/data/request/store_request.dart';
 import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
 
 import 'app/app_router.dart';
 import 'app/di/di.dart';
 import 'cubit/app_cubit.dart';
+import 'ui/main_screen/home/store_cubit/special_stores_cubit.dart';
+import 'ui/main_screen/home/store_cubit/top_stores_cubit.dart';
 
 class MyApp extends StatelessWidget {
   static late bool isDark;
   static late AppLocalizations tr;
   static late BuildContext appContext;
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+  var request = StoreRequest(skip: 0, take: 10);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,15 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AppCubit>()),
         BlocProvider(create: (context) => getIt<GetStoresCubit>()),
+        BlocProvider(
+          create: (context) => getIt<GetStoresCubit>()..getStores(request: request),
+        ),
+        BlocProvider(
+          create: (context) => getIt<SpecialStoresCubit>()..getSpecialStores(request: request),
+        ),
+        BlocProvider(
+          create: (context) => getIt<TopStoresCubit>()..getTopStores(request: request),
+        ),
       ],
       child: BlocBuilder<AppCubit, AppState>(
         builder: (context, local) {

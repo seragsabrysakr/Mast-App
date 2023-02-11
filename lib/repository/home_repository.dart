@@ -48,7 +48,8 @@ class HomeRepository {
         apiCall:
             _appServiceClient.addRating(comment: comment, shopRating: shopRating, shopId: shopId));
     return data;
-  }Future<Either<Failure, BaseResponse<List<StoreModel>>>> addStore({
+  }
+  Future<Either<Failure, BaseResponse<List<StoreModel>>>> addStore({
     required File image,
     required String title,
     required String description,

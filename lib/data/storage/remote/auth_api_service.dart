@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:mast/app/api_urls.dart';
 import 'package:mast/data/model/auth/user_model.dart';
@@ -33,4 +35,19 @@ abstract class AuthServiceClient {
     @Part(name: 'phone') required String phone,
     @Part(name: 'otp') required String code,
   });
+  @MultiPart()
+  @POST(ApiUrls.updateProfile)
+  Future<BaseResponse<UserModel>> updateProfile({
+    @Part(name: 'image') File? image,
+    @Part(name: 'email') required String email,
+    @Part(name: 'name') required String name,
+  });
+  @MultiPart()
+  @POST(ApiUrls.updateProfile)
+  Future<BaseResponse<List<UserModel>>> changePassword({
+    @Part(name: 'email') required String email,
+    @Part(name: 'password') required String password,
+  });
+  @POST(ApiUrls.deleteAcount)
+  Future<BaseResponse<String>> deleteAcount();
 }

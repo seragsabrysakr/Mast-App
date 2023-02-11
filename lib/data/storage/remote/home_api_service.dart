@@ -38,7 +38,8 @@ abstract class HomeServiceClient {
     @Part(name: 'shop_id') required String shopId,
     @Part(name: 'comment') required String comment,
     @Part(name: 'shop_rating') required String shopRating,
-  });@MultiPart()
+  });
+  @MultiPart()
   @POST(ApiUrls.addStore)
   Future<BaseResponse<List<StoreModel>>> addStore({
     @Part(name: 'image') required File image,

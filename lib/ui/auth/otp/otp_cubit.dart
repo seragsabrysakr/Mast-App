@@ -60,7 +60,6 @@ class PhoneVerificationCubit extends Cubit<FlowState> {
 
   Future<void> verifySmsCode(String otpCode) async {
     emit(LoadingState(stateRendererType: StateRendererType.popupLoadingState));
-
     dPrint("verifySmsCode $otpCode");
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: otpCode);

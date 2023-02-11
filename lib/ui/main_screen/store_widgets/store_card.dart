@@ -9,11 +9,11 @@ import 'package:mast/ui/main_screen/store_widgets/store_footer.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_title.dart';
 
 class StoreCard extends StatefulWidget {
-   StoreModel _store;
+  StoreModel _store;
 
-
-
-  StoreCard({Key? key,required StoreModel store}) : _store = store, super(key: key);
+  StoreCard({Key? key, required StoreModel store})
+      : _store = store,
+        super(key: key);
 
   @override
   State<StoreCard> createState() => _StoreCardState();
@@ -26,24 +26,23 @@ class _StoreCardState extends State<StoreCard> {
     widget._store = value;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 5.w),
       child: TransparentImageCard(
         width: 80.w,
-        height: 35.h,
+        height: 40.h,
         contentMarginTop: 7.h,
-        imageProvider: Image.network(store.image??'').image,
-        title:  StoreTitle(title: store.title??'', color: Colors.white),
-        description:  SizedBox(
+        imageProvider: Image.network(store.image ?? '').image,
+        title: StoreTitle(title: store.title ?? '', color: Colors.white),
+        description: SizedBox(
           height: 10.h,
-          child: StoreDescription(
-              description:store.description??'',
-              color: Colors.white),
+          child: StoreDescription(description: store.description ?? '', color: Colors.white),
         ),
-        footer:  StoreFooter(store: store,),
+        footer: StoreFooter(
+          store: store,
+        ),
       ),
     );
   }

@@ -1,22 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mast/app/app_assets.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_router.dart';
+import 'package:mast/app/app_sized_box.dart';
 import 'package:mast/app/app_validation.dart';
 import 'package:mast/app/constants.dart';
 import 'package:mast/app/di/di.dart';
 import 'package:mast/app/extensions.dart';
+import 'package:mast/app/helpers/image_helper.dart';
 import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
 import 'package:mast/data/storage/local/app_prefs.dart';
 import 'package:mast/my_app.dart';
+import 'package:mast/ui/componnents/app_show.dart';
 import 'package:mast/ui/componnents/custom_button.dart';
 import 'package:mast/ui/componnents/custom_text_field.dart';
 import 'package:mast/ui/main_screen/main_screen.dart';
 import 'package:mast/ui/main_screen/profile/country.dart';
 import 'package:mast/ui/main_screen/profile/profile_cubit.dart';
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -42,10 +49,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isLogIn = getIt<AppPreferences>().isUserLogin;
   bool showPassword = true;
   bool showConfirmPassword = true;
-  var nameController =
-      TextEditingController(text: getIt<AppPreferences>().userDataModel?.name);
-  var emailController =
-      TextEditingController(text: getIt<AppPreferences>().userDataModel?.email);
+  var nameController = TextEditingController(text: getIt<AppPreferences>().userDataModel?.name);
+  var emailController = TextEditingController(text: getIt<AppPreferences>().userDataModel?.email);
   var phoneController = TextEditingController();
   var passController = TextEditingController(text: '');
   var confirmPassController = TextEditingController(text: '');
@@ -55,17 +60,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    CountryCode? myCountry = Countries.getCountryCodeAndPhone(
-        getIt<AppPreferences>().userDataModel?.phone ?? '');
+    CountryCode? myCountry =
+        Countries.getCountryCodeAndPhone(getIt<AppPreferences>().userDataModel?.phone ?? '');
     initialCode = myCountry?.code.toString() ?? Constants.initialCountry;
-    phoneController =
-        TextEditingController(text: myCountry?.splitPhone.toString() ?? '');
+    phoneController = TextEditingController(text: myCountry?.splitPhone.toString() ?? '');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return buildScreenBody();
+  }
+
+  Widget btn1(BuildContext context) {
+    return MaterialButton(
+      color: Colors.grey[300],
+      minWidth: 40.w,
+      onPressed: () => Dialogs.materialDialog(
+          useRootNavigator: false,
+          title: "تغيير الصورة ",
+          color: Colors.white,
+          context: context,
+          onClose: (value) => print("returned value is '$value'"),
+          actions: [
+            IconsButton(
+              onPressed: () {
+                DocumentHelper.pickImage(PickImageFromEnum.camera, context)
+                    .then((value) => setState(() {}));
+              },
+              text: "الكاميرا",
+              iconData: Icons.camera_alt,
+              color: Colors.yellow,
+              textStyle: const TextStyle(color: Colors.black),
+              iconColor: Colors.white,
+            ),
+            IconsButton(
+              onPressed: () {
+                DocumentHelper.pickImage(PickImageFromEnum.gallery, context)
+                    .then((value) => setState(() {}));
+              },
+              text: "المعرض",
+              iconData: Icons.camera,
+              color: Colors.yellow,
+              textStyle: const TextStyle(color: Colors.black),
+              iconColor: Colors.white,
+            ),
+          ]),
+      child: const Text("تغيير صورة "),
+    );
   }
 
   buildPhoneTextField() {
@@ -80,10 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           initialCountryCode: Constants.initialCountry,
           disableLengthCheck: false,
           flagsButtonMargin: EdgeInsets.symmetric(horizontal: 5.w),
-          style: TextStyle(
-              fontSize: 15.0.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.black),
+          style: TextStyle(fontSize: 15.0.sp, fontWeight: FontWeight.w400, color: Colors.black),
           decoration: phoneFieldDecoration(),
           onChanged: (phone) {
             print(phone.completeNumber);
@@ -107,8 +146,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         filled: true,
         alignLabelWithHint: true,
         hintText: MyApp.tr.mobileNumber,
-        hintStyle: AppTextStyle.getRegularStyle(
-            color: AppColors.textFieldHintColor, fontSize: 13.sp),
+        hintStyle:
+            AppTextStyle.getRegularStyle(color: AppColors.textFieldHintColor, fontSize: 13.sp),
         contentPadding: EdgeInsets.symmetric(
           vertical: 1.0.h,
           horizontal: 5.w,
@@ -119,8 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18.h),
-            borderSide:
-                const BorderSide(color: AppColors.primaryColor, width: 2)),
+            borderSide: const BorderSide(color: AppColors.primaryColor, width: 2)),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18.h),
             borderSide: const BorderSide(color: AppColors.textFieldHintColor)),
@@ -140,8 +178,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is SuccessState) {
             var cubit = ProfileCubit.get(context);
             userModel = cubit.user;
-            var userM = cubit.user;
             getIt<AppPreferences>().userDataModel = userModel;
+            DocumentHelper.endUploadFile();
           }
         },
         builder: (context, state) {
@@ -150,19 +188,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
               screenContent: !isLogIn
                   ? buildNoUserView()
                   : buildScreenContent(profileCubit, context), retry: () {
-            profileCubit.updateProfile(
-              nameController.text,
-              countryCode.isEmpty ? userModel?.phone ?? '' : countryCode,
-              emailController.text,
-            );
+            // profileCubit.updateProfile(
+            //   nameController.text,
+            //   countryCode.isEmpty ? userModel?.phone ?? '' : countryCode,
+            //   emailController.text,
+            // );
           });
         },
       ),
     );
   }
 
-  SingleChildScrollView buildScreenContent(
-      ProfileCubit profileCubit, BuildContext context) {
+  SingleChildScrollView buildScreenContent(ProfileCubit profileCubit, BuildContext context) {
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 8.h),
       physics: const BouncingScrollPhysics(),
@@ -173,7 +210,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _profileHeader(),
+              AppSizedBox.h5,
+              ClipOval(
+                child: CircleAvatar(
+                  radius: 6.3.h,
+                  child: DocumentHelper.pickedImage == null
+                      ? AppShow.buildImage(img: userModel?.image ?? '', width: 40.w, height: 12.6.h)
+                      : Image.file(
+                          DocumentHelper.pickedImage!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        ),
+                ),
+              ),
+              AppSizedBox.h5,
+
+              btn1(context),
+              AppSizedBox.h2,
+
+              // _profileHeader(),
               _profileForm(),
               _profileFooter(profileCubit, context),
             ],
@@ -199,17 +255,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Text(
             'لا يوجد حساب مسجل',
-            style: AppTextStyle.getRegularStyle(
-                color: AppColors.primaryColor, fontSize: 15.sp),
+            style: AppTextStyle.getRegularStyle(color: AppColors.primaryColor, fontSize: 15.sp),
           ),
           TextButton(
             onPressed: () {
-              navigateTo( AppRouter.loginScreen);
+              navigateTo(AppRouter.loginScreen);
             },
             child: Text(
               'تسجيل الدخول',
-              style: AppTextStyle.getRegularStyle(
-                  color: Colors.black, fontSize: 15.sp),
+              style: AppTextStyle.getRegularStyle(color: Colors.black, fontSize: 15.sp),
             ),
           ),
         ],
@@ -218,8 +272,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _profileHeader() {
-    String? text =
-        userModel?.name?.length != 1 ? userModel?.name?.substring(0, 1) : '';
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -239,8 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Text(greeting(),
                       style: AppTextStyle.getRegularStyle(
-                          color: AppColors.textFieldHintColor,
-                          fontSize: 12.sp)),
+                          color: AppColors.textFieldHintColor, fontSize: 12.sp)),
                 ],
               ),
             ],
@@ -283,11 +334,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
+
   void navigateTo(String route, {Object? arguments}) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(MainScreen.mainContext,)
-        .pushNamedAndRemoveUntil(
-        route, arguments: arguments, (Route<dynamic> route) => false));
+    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(
+          MainScreen.mainContext,
+        ).pushNamedAndRemoveUntil(route, arguments: arguments, (Route<dynamic> route) => false));
   }
+
   _profileFooter(ProfileCubit profileCubit, BuildContext context) {
     return Column(
       children: [
@@ -302,11 +355,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           txtcolor: Colors.black,
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
-            // ProfileCubit.get(context).updateProfile(
-            //   nameController.text,
-            //   countryCode.isEmpty ? userModel?.phone ?? '' : countryCode,
-            //   emailController.text,
-            // );
+            ProfileCubit.get(context).updateProfile(
+              image: DocumentHelper.pickedImage != null
+                  ? File(DocumentHelper.pickedImage!.path)
+                  : null,
+              userName: nameController.text,
+              email: emailController.text,
+            );
           },
           fontsize: 12.sp,
           text: MyApp.tr.save,

@@ -12,7 +12,7 @@ import 'package:mast/repository/home_repository.dart';
 class GetStoresCubit extends Cubit<FlowState> {
 final HomeRepository homeRepository;
   GetStoresCubit(this.homeRepository) : super(LoadingState(
-      stateRendererType: StateRendererType.popupLoadingState));
+      stateRendererType: StateRendererType.fullScreenLoadingState));
   List<StoreModel> stores = [];
   int currentPage = 1;
   static GetStoresCubit get(BuildContext context) =>
@@ -26,7 +26,7 @@ final HomeRepository homeRepository;
       skip: stores.length,
     );
     emit(LoadingState(
-        stateRendererType: StateRendererType.popupLoadingState));
+        stateRendererType: StateRendererType.fullScreenLoadingState));
     Future.delayed(const Duration(seconds: 0), () {
       homeRepository.viewStores(skip: req!.skip,
       take: req.take,

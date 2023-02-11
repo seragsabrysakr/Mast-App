@@ -40,35 +40,43 @@ class StoreDetails extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppShow.buildImage(height: 30.h, width: 100.w, img: store.image ?? ''),
-                const SizedBox(
-                  height: 10,
-                ),
+                AppSizedBox.h2,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
-                      children: [
-                        buildChip('اسم المتجر'),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            store.title ?? '',
-                            style: AppTextStyle.getRegularStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ],
+                    buildChip('زيارة صفحة المتجر'),
+                    TextButton(
+                        onPressed: () async {
+                          await _launchInBrowser(store.url ?? '');
+                        },
+                        child: Text(
+                          'اضغط هنا',
+                          style: AppTextStyle.getRegularStyle(color: Colors.blue),
+                        ))
+                  ],
+                ),
+                AppSizedBox.h2,
+                Column(
+                  children: [
+                    buildChip('اسم المتجر'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        store.title ?? '',
+                        style: AppTextStyle.getRegularStyle(color: Colors.grey),
+                      ),
                     ),
-                    Column(
-                      children: [
-                        buildChip('نوع المتجر'),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            store.type ?? '',
-                            style: AppTextStyle.getRegularStyle(color: Colors.grey),
-                          ),
-                        ),
-                      ],
+                  ],
+                ),
+                Column(
+                  children: [
+                    buildChip('نوع المتجر'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        store.type ?? '',
+                        style: AppTextStyle.getRegularStyle(color: Colors.grey),
+                      ),
                     ),
                   ],
                 ),
@@ -122,20 +130,6 @@ class StoreDetails extends StatelessWidget {
                   ],
                 ),
                 AppSizedBox.h1,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    buildChip('زيارة صفحة المتجر'),
-                    TextButton(
-                        onPressed: () async {
-                          await _launchInBrowser(store.url ?? '');
-                        },
-                        child: Text(
-                          'اضغط هنا',
-                          style: AppTextStyle.getRegularStyle(color: Colors.blue),
-                        ))
-                  ],
-                ),
               ],
             ),
           ),
@@ -166,7 +160,7 @@ class StoreDetails extends StatelessWidget {
           children: [
             AppSizedBox.h3,
             SizedBox(
-              height: ((store.ratings?.length ?? 0) * 10).h,
+              height: ((store.ratings?.length ?? 0) * 15).h,
               child: ListView.separated(
                 itemBuilder: (context, index) => buildRate(store.ratings?[index]),
                 separatorBuilder: (context, index) => AppSizedBox.h1,
@@ -179,31 +173,49 @@ class StoreDetails extends StatelessWidget {
     );
   }
 
-  Container buildRate(Rating? ratings) {
+  Container buildRate(Ratings? ratings) {
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: 90.w,
-      height: 8.h,
       margin: EdgeInsets.symmetric(horizontal: 5.w),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(10)),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            ratings?.comment ?? '',
-            textAlign: TextAlign.justify,
-            style: AppTextStyle.getRegularStyle(color: Colors.grey),
+          Column(
+            children: [
+              ClipOval(
+                child: CircleAvatar(
+                    radius: 4.h,
+                    child: AppShow.buildImage(
+                        img: ratings?.client?.image ?? '', width: 40.w, height: 12.6.h)),
+              ),
+              Text(
+                ratings?.client?.name ?? '',
+                style: AppTextStyle.getBoldStyle(color: Colors.black),
+              ),
+            ],
           ),
-          RatingBarIndicator(
-            rating: double.parse(ratings?.rating?.toString() ?? '0.0'),
-            itemBuilder: (context, index) => const Icon(
-              Icons.star,
-              color: Colors.yellow,
-            ),
-            unratedColor: Colors.grey,
-            itemCount: 5,
-            itemSize: 15.sp,
-            direction: Axis.horizontal,
+          Column(
+            children: [
+              Text(
+                ratings?.comment ?? '',
+                textAlign: TextAlign.justify,
+                style: AppTextStyle.getRegularStyle(color: Colors.grey),
+              ),
+              RatingBarIndicator(
+                rating: double.parse(ratings?.rating?.toString() ?? '0.0'),
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Colors.yellow,
+                ),
+                unratedColor: Colors.grey,
+                itemCount: 5,
+                itemSize: 15.sp,
+                direction: Axis.horizontal,
+              ),
+            ],
           ),
         ],
       ),
