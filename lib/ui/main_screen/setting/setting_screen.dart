@@ -188,8 +188,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   onChanged: (val) {
                     setState(() {
                       notify = val;
-                      getIt<AppPreferences>().showNotification =
-                          !getIt<AppPreferences>().showNotification;
+                      getIt<AppPreferences>().showNotification = true;
+                      // !getIt<AppPreferences>().showNotification;
                     });
                   }),
             )

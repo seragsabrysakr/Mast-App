@@ -23,20 +23,16 @@ class LoginCubit extends Cubit<FlowState> {
     emit(LoadingState(stateRendererType: StateRendererType.popupLoadingState));
     _repository
         .login(LoginRequest(
-            email: email,
-            password: password,
-            fireBaseToken: _preferences.firebaseToken))
+            email: email, password: password, fireBaseToken: _preferences.firebaseToken))
         .then((value) => value.fold(
               (failure) {
-                emit(ErrorState(
-                    StateRendererType.toastErrorState, failure.message));
+                emit(ErrorState(StateRendererType.toastErrorState, failure.message));
                 print("errorMessage: ${failure.message}");
               },
               (data) {
                 print(data.toString());
                 userData = data.data;
                 _repository.saveAsAuthenticatedUser(data.data!);
-
                 emit(SuccessState(
                   StateRendererType.toastSuccess,
                   message: MyApp.tr.success,

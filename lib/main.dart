@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:mast/app/notification/app_firebase.dart';
-
 import 'app/bloc_observer.dart';
 import 'app/di/di.dart';
 import 'my_app.dart';

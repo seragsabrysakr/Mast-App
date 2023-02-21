@@ -1,20 +1,15 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
-
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
-import 'package:path_provider/path_provider.dart';
-import 'package:mast/app/di/di.dart';
-import 'package:mast/app/fuctions.dart';
+import 'package:mast/app/notification/notificatin_model.dart';
 import 'package:mast/data/storage/local/app_prefs.dart';
-
-import 'notificatin_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppNotifications {
-  bool isShowNotification = getIt<AppPreferences>().showNotification;
-
   AppNotifications() {
     final InitializationSettings initializationSettings =
         InitializationSettings(
@@ -51,9 +46,9 @@ class AppNotifications {
   /// done later
   final DarwinInitializationSettings initializationSettingsIOS =
       const DarwinInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
     // onDidReceiveLocalNotification: (
     //   int? id,
     //   String? title,
@@ -77,7 +72,9 @@ class AppNotifications {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> showNotification(NotificationModel notification) async {
+  Future<void> showNotification(
+    NotificationModel notification,
+  ) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails('your channel id', 'your channel name',
             channelDescription: 'your channel description',
@@ -91,7 +88,8 @@ class AppNotifications {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestPermission();
-    dPrint(notification.toJson().toString());
+    print(notification.toJson().toString());
+    bool isShowNotification = await getNotificationsValue();
     if (isShowNotification) {
       await flutterLocalNotificationsPlugin.show(Random().nextInt(1000),
           notification.title, notification.body, platformChannelSpecifics,
@@ -100,6 +98,7 @@ class AppNotifications {
   }
 
   Future<void> showBigPictureNotification() async {
+    bool isShowNotification = await getNotificationsValue();
     final String largeIconPath =
         await getImageFilePathFromAssets("assets/images/test_team_logo2.png");
     final String bigPicturePath =
@@ -126,6 +125,7 @@ class AppNotifications {
 
   Future<void> showBigPictureNotificationURL(
       NotificationModel notification) async {
+    bool isShowNotification = await getNotificationsValue();
     final ByteArrayAndroidBitmap largeIcon = ByteArrayAndroidBitmap(
         await _getByteArrayFromUrl(notification.imageUrl!));
     final ByteArrayAndroidBitmap bigPicture = ByteArrayAndroidBitmap(
@@ -169,6 +169,7 @@ class AppNotifications {
 
   Future<void> showBigPictureNotificationHiddenLargeIcon(
       NotificationModel notification) async {
+    bool isShowNotification = await getNotificationsValue();
     final ByteArrayAndroidBitmap largeIcon = ByteArrayAndroidBitmap(
         await _getByteArrayFromUrl(notification.imageUrl!));
     final ByteArrayAndroidBitmap bigPicture = ByteArrayAndroidBitmap(
@@ -195,5 +196,11 @@ class AppNotifications {
           '${notification.body}',
           platformChannelSpecifics);
     }
+  }
+
+  Future<bool> getNotificationsValue() async {
+    SharedPreferences _preferences = await SharedPreferences.getInstance();
+    bool isShowNotification = AppPreferences(_preferences).showNotification;
+    return isShowNotification;
   }
 }

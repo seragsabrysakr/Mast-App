@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:mast/app/di/di.dart';
@@ -37,18 +39,15 @@ class AppFirebase {
       sound: true,
     );
     print('User granted permission: ${settings.authorizationStatus}');
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: true,
     );
 
     try {
-      // use the returned token to send messages to users from your custom server
-      String? token = await messaging.getToken(
-        vapidKey: "BGpdLRs......",
-      );
+      if (Platform.isIOS) await messaging.getAPNSToken();
+      String? token = await messaging.getToken();
       dPrint("firebaseToken: $token");
       getIt<AppPreferences>().firebaseToken = token.toString();
       dPrint("firebaseToken11: ${getIt<AppPreferences>().firebaseToken}");
@@ -59,8 +58,7 @@ class AppFirebase {
 
   Future<void> registerFCMBackgroundListener() async {
     try {
-      FirebaseMessaging.onBackgroundMessage(
-          _firebaseMessagingBackgroundHandler);
+      FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     } catch (e) {
       print("registerFCMBackgroundListenerError: $e");
     }
@@ -77,8 +75,7 @@ class AppFirebase {
         if (notification.imageUrl != null && notification.imageUrl != '') {
           dPrint(notification.imageUrl.toString());
 
-          AppNotifications()
-              .showBigPictureNotificationHiddenLargeIcon(notification);
+          AppNotifications().showBigPictureNotificationHiddenLargeIcon(notification);
         } else {
           dPrint(notification.toJson().toString());
 
@@ -92,19 +89,12 @@ class AppFirebase {
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // dPrint("message: ${message}");
-  // dPrint("Handling a background message: ${message.messageId}");
   print('Message data: ${message.data}');
-
   var notification = NotificationModel.fromJson(message.data);
   if (notification.imageUrl != null && notification.imageUrl != '') {
     AppNotifications().showBigPictureNotificationHiddenLargeIcon(notification);
   } else {
     dPrint(notification.toJson().toString());
-
     AppNotifications().showNotification(notification);
   }
 }

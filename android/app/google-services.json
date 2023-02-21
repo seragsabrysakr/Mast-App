@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:753722068666:android:8fb526492ffc1f262a3c83",
+        "mobilesdk_app_id": "1:753722068666:android:cb26ee6ce9e7af832a3c83",
         "android_client_info": {
           "package_name": "com.mast.da3m"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "753722068666-k9q29mqgrcfa8f841caarefdl33nhfa8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mast.da3m",
-            "certificate_hash": "cee253a7cc7a2d018683c45977ea4e97ce6f3fe6"
-          }
-        },
         {
           "client_id": "753722068666-fo6mueqgvr4l9oekqf1n6vgpm2oaiont.apps.googleusercontent.com",
           "client_type": 3

@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>933715358976-imu16c1i0vhtklctavq831ohbjphrvv3.apps.googleusercontent.com</string>
+	<string>753722068666-6e8h9pookml0t5a1cn7f2csorlcr95ik.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.933715358976-imu16c1i0vhtklctavq831ohbjphrvv3</string>
+	<string>com.googleusercontent.apps.753722068666-6e8h9pookml0t5a1cn7f2csorlcr95ik</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>753722068666-k9q29mqgrcfa8f841caarefdl33nhfa8.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB6IfiCtzCsWXC8HglhrAr6KNa-_ISShRM</string>
+	<string>AIzaSyCtuvwCz9QJvYiGGhfwPN35m2OMDQyZO6A</string>
 	<key>GCM_SENDER_ID</key>
-	<string>933715358976</string>
+	<string>753722068666</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.mast</string>
+	<string>com.mast.da3m</string>
 	<key>PROJECT_ID</key>
-	<string>fayrous-6b9ea</string>
+	<string>mast-1bcca</string>
 	<key>STORAGE_BUCKET</key>
-	<string>fayrous-6b9ea.appspot.com</string>
+	<string>mast-1bcca.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:933715358976:ios:3770657cde974257106fe5</string>
+	<string>1:753722068666:ios:0e70e0c9f1daa6782a3c83</string>
 </dict>
 </plist>
