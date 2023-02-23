@@ -46,8 +46,12 @@ class AppFirebase {
     );
 
     try {
-      if (Platform.isIOS) await messaging.getAPNSToken();
-      String? token = await messaging.getToken();
+    if(Platform.isIOS){
+      await messaging.getAPNSToken();
+    }
+      String? token = await messaging.getToken(
+          vapidKey:
+              'BCAAvb4_vJ-D31GaHLSns-kFLMoG9vaiJHcktKS2QIudpNV_y2inDVGjgVn1C_Hvzq8tQjUHeMxsg73uTX_E_4U');
       dPrint("firebaseToken: $token");
       getIt<AppPreferences>().firebaseToken = token.toString();
       dPrint("firebaseToken11: ${getIt<AppPreferences>().firebaseToken}");

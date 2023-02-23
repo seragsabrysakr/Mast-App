@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+
+ 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:mast/app/fuctions.dart';
 import 'package:mast/app/notification/notificatin_model.dart';
 import 'package:mast/data/storage/local/app_prefs.dart';
 import 'package:path_provider/path_provider.dart';
@@ -88,7 +91,7 @@ class AppNotifications {
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.requestPermission();
-    print(notification.toJson().toString());
+    dPrint(notification.toJson().toString());
     bool isShowNotification = await getNotificationsValue();
     if (isShowNotification) {
       await flutterLocalNotificationsPlugin.show(Random().nextInt(1000),

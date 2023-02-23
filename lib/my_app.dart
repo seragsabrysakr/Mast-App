@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/data/request/store_request.dart';
 import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
+import 'package:mast/ui/main_screen/home/store_cubit/notification_cubit.dart';
 
 import 'app/app_router.dart';
 import 'app/di/di.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<AppCubit>()),
         BlocProvider(create: (context) => getIt<GetStoresCubit>()),
+        BlocProvider(create: (context) => getIt<NotificationCubit>()),
         BlocProvider(
           create: (context) => getIt<GetStoresCubit>()..getStores(request: request),
         ),

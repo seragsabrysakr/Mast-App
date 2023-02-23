@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:mast/app/api_urls.dart';
 import 'package:mast/data/model/base_response.dart';
+import 'package:mast/data/model/home/notification_server_model.dart';
 import 'package:mast/data/model/home/store_model.dart';
 import 'package:retrofit/http.dart';
 
@@ -24,6 +25,12 @@ abstract class HomeServiceClient {
     @Query('skip') int? skip,
     @Query('take') int? take,
     @Query('title') String? title,
+  });
+
+  @GET(ApiUrls.viewNotification)
+  Future<BaseResponse<List<NotificationServerModel>>> viewNotification({
+    @Query('skip') int? skip,
+    @Query('take') int? take,
   });
 
   @GET(ApiUrls.viewSpecial)
