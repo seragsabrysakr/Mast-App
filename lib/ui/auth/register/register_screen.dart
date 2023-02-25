@@ -38,11 +38,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formKey = GlobalKey<FormState>();
   void routeToHome(UserModel user) {
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Navigator.of(context).pushNamedAndRemoveUntil(
-            AppRouter.phoneVerificationScreen,
-            arguments: user,
-            (Route<dynamic> route) => false));
+    WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(context)
+        .pushNamedAndRemoveUntil(
+            AppRouter.mainScreen, arguments: user, (Route<dynamic> route) => false));
   }
 
   bool terms = false;
@@ -65,9 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             bool isSuccess = state is SuccessState;
 
             return state.flowStateBuilder(context,
-                screenContent: isSuccess
-                    ? const SizedBox()
-                    : buildScreenContent(cubit), retry: () {
+                screenContent: isSuccess ? const SizedBox() : buildScreenContent(cubit), retry: () {
               registerAction(cubit);
             });
           },
@@ -135,8 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           Text(
             MyApp.tr.registerNewAccount,
-            style: AppTextStyle.getBoldStyle(
-                color: AppColors.primaryColor, fontSize: 15.sp),
+            style: AppTextStyle.getBoldStyle(color: AppColors.primaryColor, fontSize: 15.sp),
           ),
           AppSizedBox.h4,
         ],
@@ -248,8 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 color: Colors.grey,
               )),
           validator: (String? value) {
-            return Validations.confirmValidation(
-                value, passwordController.text);
+            return Validations.confirmValidation(value, passwordController.text);
           },
         ),
       ],
@@ -265,13 +259,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           controller: mobileController,
           showDropdownIcon: false,
           enabled: true,
+          invalidNumberMessage: 'رقم الهاتف غير صحيح',
           initialCountryCode: Constants.initialCountry,
           disableLengthCheck: false,
           flagsButtonMargin: EdgeInsets.symmetric(horizontal: 5.w),
-          style: TextStyle(
-              fontSize: 15.0.sp,
-              fontWeight: FontWeight.w400,
-              color: Colors.black),
+          style: TextStyle(fontSize: 15.0.sp, fontWeight: FontWeight.w400, color: Colors.black),
           decoration: phoneFieldDecoration(),
           onChanged: (phone) {
             print(phone.completeNumber);
@@ -295,8 +287,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         filled: true,
         alignLabelWithHint: true,
         hintText: MyApp.tr.mobileNumber,
-        hintStyle: AppTextStyle.getRegularStyle(
-            color: AppColors.textFieldHintColor, fontSize: 13.sp),
+        hintStyle:
+            AppTextStyle.getRegularStyle(color: AppColors.textFieldHintColor, fontSize: 13.sp),
         contentPadding: EdgeInsets.symmetric(
           vertical: 1.0.h,
           horizontal: 5.w,
@@ -307,8 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18.h),
-            borderSide:
-                const BorderSide(color: AppColors.primaryColor, width: 2)),
+            borderSide: const BorderSide(color: AppColors.primaryColor, width: 2)),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(18.h),
             borderSide: const BorderSide(color: AppColors.textFieldHintColor)),

@@ -6,7 +6,7 @@ class Constants {
   static const String defaultLanguage = "en";
   static const String arLanguage = "ar-EG";
 
-  static const String initialCountry = 'EG';
+  static const String initialCountry = 'SA';
   static const String initialCode = '+20';
   static const String enLanguage = "en";
   static const String isDarkMode = 'isDarkMode';

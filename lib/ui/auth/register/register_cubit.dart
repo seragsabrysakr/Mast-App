@@ -14,8 +14,7 @@ class RegisterCubit extends Cubit<FlowState> {
   final AuthRepository _repository;
   final AppPreferences _preferences;
   RegisterCubit(this._repository, this._preferences) : super(ContentState());
-  static RegisterCubit get(BuildContext context) =>
-      context.read<RegisterCubit>();
+  static RegisterCubit get(BuildContext context) => context.read<RegisterCubit>();
   UserModel? userData;
   void register({
     required String email,
@@ -33,13 +32,15 @@ class RegisterCubit extends Cubit<FlowState> {
             fireBaseToken: _preferences.firebaseToken))
         .then((value) => value.fold(
               (failure) {
-                emit(ErrorState(
-                    StateRendererType.toastErrorState, failure.message));
+                emit(ErrorState(StateRendererType.toastErrorState, failure.message));
                 print("errorMessage: ${failure.message}");
               },
               (data) {
                 print(data.toString());
+                _repository.userVerifyPhone(phone: phone, code: '999999');
                 userData = data.data;
+                _preferences.isUserLogin = true;
+
                 _repository.saveAsAuthenticatedUser(data.data!);
                 emit(SuccessState(
                   StateRendererType.toastSuccess,

@@ -70,14 +70,11 @@ class _MainScreenState extends State<MainScreen> {
                     leading: isLogIn
                         ? IconButton(
                             style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.transparent),
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                      EdgeInsets.symmetric(horizontal: 4.w)),
-                              elevation:
-                                  MaterialStateProperty.resolveWith<double>(
-                                      (Set<MaterialState> states) {
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                              padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                  EdgeInsets.symmetric(horizontal: 4.w)),
+                              elevation: MaterialStateProperty.resolveWith<double>(
+                                  (Set<MaterialState> states) {
                                 if (states.contains(MaterialState.pressed)) {
                                   return 0;
                                 }
@@ -93,8 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                             icon: const Icon(Icons.notifications_active_rounded,
                                 color: AppColors.blackColor),
                             onPressed: () {
-                              AppShow.animationDialog(
-                                  context, const NotificationScreen());
+                              AppShow.animationDialog(context, const NotificationScreen());
                             },
                           )
                         : const SizedBox(),
@@ -102,14 +98,11 @@ class _MainScreenState extends State<MainScreen> {
                       if (isLogIn)
                         FilledButton.icon(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Colors.transparent),
-                            padding:
-                                MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                    EdgeInsets.symmetric(horizontal: 4.w)),
-                            elevation:
-                                MaterialStateProperty.resolveWith<double>(
-                                    (Set<MaterialState> states) {
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                            padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                                EdgeInsets.symmetric(horizontal: 4.w)),
+                            elevation: MaterialStateProperty.resolveWith<double>(
+                                (Set<MaterialState> states) {
                               if (states.contains(MaterialState.pressed)) {
                                 return 0;
                               }
@@ -122,11 +115,9 @@ class _MainScreenState extends State<MainScreen> {
                               return 0;
                             }),
                           ),
-                          icon: const Icon(Icons.add,
-                              color: AppColors.blackColor),
+                          icon: const Icon(Icons.add, color: AppColors.blackColor),
                           onPressed: () {
-                            AppShow.animationDialog(
-                                context, const AddStoreScreen());
+                            AppShow.animationDialog(context, const AddStoreScreen());
                           },
                           label: Text(
                             'أضف متجر',
@@ -137,8 +128,8 @@ class _MainScreenState extends State<MainScreen> {
                     ],
                     title: Text(
                       cubit.titles[cubit.selectedIndex],
-                      style: AppTextStyle.getBoldStyle(
-                          color: AppColors.blackColor, fontSize: 12.sp),
+                      style:
+                          AppTextStyle.getBoldStyle(color: AppColors.blackColor, fontSize: 12.sp),
                     ),
                   ),
                   body: WillPopScope(
@@ -182,15 +173,14 @@ class _MainScreenState extends State<MainScreen> {
                         duration: Duration(milliseconds: 100),
                         curve: Curves.ease,
                       ),
-                      screenTransitionAnimation:
-                          const ScreenTransitionAnimation(
+                      screenTransitionAnimation: const ScreenTransitionAnimation(
                         // Screen transition animation on change of selected tab.
                         animateTabTransition: true,
                         curve: Curves.ease,
                         duration: Duration(milliseconds: 100),
                       ),
-                      navBarStyle: NavBarStyle
-                          .style6, // Choose the nav bar style with this property.
+                      navBarStyle:
+                          NavBarStyle.style6, // Choose the nav bar style with this property.
                     ),
                   )),
             );
@@ -202,7 +192,7 @@ class _MainScreenState extends State<MainScreen> {
     return UpgradeAlert(
         upgrader: Upgrader(
           shouldPopScope: () => false,
-          messages: UpgraderMessages(code: 'en'),
+          messages: UpgraderMessages(code: 'ar'),
           showIgnore: true,
           showReleaseNotes: false,
         ),

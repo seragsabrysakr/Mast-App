@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:image_card/image_card.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_sized_box.dart';
@@ -14,11 +12,8 @@ import 'package:mast/data/model/home/notification_server_model.dart';
 import 'package:mast/data/model/home/store_model.dart';
 import 'package:mast/data/request/store_request.dart';
 import 'package:mast/ui/componnents/app_show.dart';
-import 'package:mast/ui/componnents/custom_button.dart';
 import 'package:mast/ui/main_screen/allstores/serach.dart';
 import 'package:mast/ui/main_screen/home/store_cubit/notification_cubit.dart';
-import 'package:mast/ui/main_screen/store_widgets/rating/rating_view.dart';
-import 'package:mast/ui/main_screen/store_widgets/store_details.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -122,10 +117,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         noItemsFoundIndicatorBuilder: (context) => emptyView(context),
         firstPageProgressIndicatorBuilder: (context) => loadingIndicator(),
         newPageProgressIndicatorBuilder: (context) => loadingIndicator(),
-        firstPageErrorIndicatorBuilder: (context) =>
-            errorIndicator(_pagingController),
-        newPageErrorIndicatorBuilder: (context) =>
-            errorIndicator(_pagingController),
+        firstPageErrorIndicatorBuilder: (context) => errorIndicator(_pagingController),
+        newPageErrorIndicatorBuilder: (context) => errorIndicator(_pagingController),
       ),
     );
   }
@@ -152,17 +145,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       width: 90.w,
-      margin: EdgeInsets.symmetric(horizontal: 3.w,vertical: 1.h),
+      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(10)),
+          border: Border.all(color: Colors.grey), borderRadius: BorderRadius.circular(10)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 2.w),
+            padding: EdgeInsets.symmetric(horizontal: 2.w),
             child: Column(
-crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   item.title ?? '',
@@ -179,8 +171,7 @@ crossAxisAlignment: CrossAxisAlignment.start,
           ClipOval(
             child: CircleAvatar(
                 radius: 4.h,
-                child: AppShow.buildImage(
-                    img: item.image ?? '', width: 40.w, height: 12.6.h)),
+                child: AppShow.buildImage(img: item.image ?? '', width: 40.w, height: 12.6.h)),
           ),
         ],
       ),

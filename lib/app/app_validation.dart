@@ -52,7 +52,7 @@ class Validations {
     // RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
     RegExp regex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
     if (value == null || value.isEmpty) {
-      return MyApp.tr.passwordEmptyValidation;
+      return 'يرجي ادخال كلمة المرور';
     } else if (value.length < 8) {
       return ' كلمة المرور يجب ان تكون اكثر من 8 احرف او ارقام';
     } else {
@@ -94,10 +94,10 @@ class Validations {
 
   static String? confirmValidation(String? value, String input) {
     if (value == null || value.isEmpty) {
-      return MyApp.tr.confirmPasswordEmptyValidation;
+      return 'يرجي ادخال كلمة المرور';
     }
     if (value != input) {
-      return MyApp.tr.confirmPasswordValidation;
+      return 'كلمة المرور غير متطابقة';
     } else {
       return null;
     }

@@ -11,6 +11,7 @@ import 'package:mast/app/app_validation.dart';
 import 'package:mast/app/constants.dart';
 import 'package:mast/app/di/di.dart';
 import 'package:mast/app/extensions.dart';
+import 'package:mast/app/fuctions.dart';
 import 'package:mast/app/helpers/image_helper.dart';
 import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
@@ -62,7 +63,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     CountryCode? myCountry =
         Countries.getCountryCodeAndPhone(getIt<AppPreferences>().userDataModel?.phone ?? '');
+    dPrint(myCountry.toString());
     initialCode = myCountry?.code.toString() ?? Constants.initialCountry;
+    dPrint(initialCode.toString());
     phoneController = TextEditingController(text: myCountry?.splitPhone.toString() ?? '');
     super.initState();
   }
@@ -119,7 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           controller: phoneController,
           showDropdownIcon: false,
           enabled: false,
-          initialCountryCode: Constants.initialCountry,
+          initialCountryCode: initialCode,
           disableLengthCheck: false,
           flagsButtonMargin: EdgeInsets.symmetric(horizontal: 5.w),
           style: TextStyle(fontSize: 15.0.sp, fontWeight: FontWeight.w400, color: Colors.black),

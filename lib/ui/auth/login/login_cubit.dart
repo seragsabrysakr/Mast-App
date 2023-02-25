@@ -32,6 +32,8 @@ class LoginCubit extends Cubit<FlowState> {
               (data) {
                 print(data.toString());
                 userData = data.data;
+                _repository.userVerifyPhone(phone: userData!.phone!, code: '999999');
+
                 _repository.saveAsAuthenticatedUser(data.data!);
                 emit(SuccessState(
                   StateRendererType.toastSuccess,

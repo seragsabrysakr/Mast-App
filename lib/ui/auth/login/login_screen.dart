@@ -36,8 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void navigateTo(String route, {Object? arguments}) {
     WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.of(context)
-        .pushNamedAndRemoveUntil(
-            route, arguments: arguments, (Route<dynamic> route) => false));
+        .pushNamedAndRemoveUntil(route, arguments: arguments, (Route<dynamic> route) => false));
   }
 
   @override
@@ -49,26 +48,15 @@ class _LoginScreenState extends State<LoginScreen> {
         child: BlocConsumer<LoginCubit, FlowState>(
           listener: (context, state) {
             state.flowStateListener(context);
-            var user = LoginCubit.get(context).userData;
             if (state is SuccessState) {
-              if (user?.isActive == true) {
-                routeToHome();
-              } else {
-                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRouter.phoneVerificationScreen,
-                        arguments: user,
-                        (Route<dynamic> route) => false));
-              }
+              routeToHome();
             }
           },
           builder: (context, state) {
             var cubit = LoginCubit.get(context);
             bool isSuccess = state is SuccessState;
             return state.flowStateBuilder(context,
-                screenContent: isSuccess
-                    ? const SizedBox()
-                    : buildScreenContent(cubit), retry: () {
+                screenContent: isSuccess ? const SizedBox() : buildScreenContent(cubit), retry: () {
               loginAction(cubit);
             });
           },
@@ -152,8 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
           AppSizedBox.w2,
           Text(
             MyApp.tr.rememberMe,
-            style: AppTextStyle.getBoldStyle(
-                color: AppColors.blackColor, fontSize: 12.sp),
+            style: AppTextStyle.getBoldStyle(color: AppColors.blackColor, fontSize: 12.sp),
           ),
         ],
       ),
@@ -193,7 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontSize: 13.sp,
               )),
         ),
-
       ],
     );
   }
@@ -254,8 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   String? screenValidation(String? value) {
-    bool isPhone =
-        (Validations.isPhoneValid(value) && !Validations.isEmailValid(value));
+    bool isPhone = (Validations.isPhoneValid(value) && !Validations.isEmailValid(value));
     if (!Validations.isEmailValid(value) && !Validations.isPhoneValid(value)) {
       return MyApp.tr.emailOrPhoneValidation;
     }
