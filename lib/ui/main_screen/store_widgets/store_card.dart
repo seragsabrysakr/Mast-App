@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:image_card/image_card.dart';
 import 'package:mast/app/extensions.dart';
 import 'package:mast/data/model/home/store_model.dart';
+import 'package:mast/ui/componnents/app_show.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_description.dart';
+import 'package:mast/ui/main_screen/store_widgets/store_details.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_footer.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_title.dart';
 
@@ -28,20 +30,26 @@ class _StoreCardState extends State<StoreCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 5.w),
-      child: TransparentImageCard(
-        width: 80.w,
-        height: 40.h,
-        contentMarginTop: 7.h,
-        imageProvider: Image.network(store.image ?? '').image,
-        title: StoreTitle(title: store.title ?? '', color: Colors.white),
-        description: SizedBox(
-          height: 10.h,
-          child: StoreDescription(description: store.description ?? '', color: Colors.white),
-        ),
-        footer: StoreFooter(
-          store: store,
+    return InkWell(
+      onTap: () {
+        AppShow.animationDialog(context, StoreDetails(store: store));
+      },
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: TransparentImageCard(
+          width: 80.w,
+          height: 40.h,
+          contentMarginTop: 15.h,
+          imageProvider: Image.network(store.image ?? '').image,
+          title: StoreTitle(title: store.title ?? '', color: Colors.white),
+          description: SizedBox(
+            height: 10.h,
+            child: StoreDescription(
+                description: store.description ?? '', color: Colors.white),
+          ),
+          footer: StoreFooter(
+            store: store,
+          ),
         ),
       ),
     );

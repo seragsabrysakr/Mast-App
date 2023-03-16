@@ -13,10 +13,8 @@ import 'package:mast/app/text_style.dart';
 import 'package:mast/data/model/home/store_model.dart';
 import 'package:mast/data/request/store_request.dart';
 import 'package:mast/ui/componnents/app_show.dart';
-import 'package:mast/ui/componnents/custom_button.dart';
 import 'package:mast/ui/main_screen/allstores/serach.dart';
 import 'package:mast/ui/main_screen/home/store_cubit/get_stores_cubit.dart';
-import 'package:mast/ui/main_screen/store_widgets/rating/rating_view.dart';
 import 'package:mast/ui/main_screen/store_widgets/store_details.dart';
 
 class AllStoresScreen extends StatefulWidget {
@@ -28,7 +26,8 @@ class AllStoresScreen extends StatefulWidget {
 
 class _AllStoresScreenState extends State<AllStoresScreen> {
   late final cubit = getIt<GetStoresCubit>();
-  final PagingController<int, StoreModel> _pagingController = PagingController(firstPageKey: 1);
+  final PagingController<int, StoreModel> _pagingController =
+      PagingController(firstPageKey: 1);
   StoreRequest request = StoreRequest();
   int pageSize = 10;
   var searchController = TextEditingController();
@@ -99,14 +98,19 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
       pagingController: _pagingController,
       physics: const BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, childAspectRatio: .7, crossAxisSpacing: 3.w, mainAxisSpacing: 5.w),
+          crossAxisCount: 2,
+          childAspectRatio: .7,
+          crossAxisSpacing: 3.w,
+          mainAxisSpacing: 5.w),
       builderDelegate: PagedChildBuilderDelegate<StoreModel>(
         itemBuilder: (context, item, index) => storeItem(item),
         noItemsFoundIndicatorBuilder: (context) => emptyView(context),
         firstPageProgressIndicatorBuilder: (context) => loadingIndicator(),
         newPageProgressIndicatorBuilder: (context) => loadingIndicator(),
-        firstPageErrorIndicatorBuilder: (context) => errorIndicator(_pagingController),
-        newPageErrorIndicatorBuilder: (context) => errorIndicator(_pagingController),
+        firstPageErrorIndicatorBuilder: (context) =>
+            errorIndicator(_pagingController),
+        newPageErrorIndicatorBuilder: (context) =>
+            errorIndicator(_pagingController),
       ),
     );
   }
@@ -130,70 +134,48 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
   }
 
   storeItem(StoreModel item) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(2.w),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
-      child: FillImageCard(
-        heightImage: 13.h,
-        width: 45.w,
-        imageProvider: Image.network(
-          item.image ?? '',
-          fit: BoxFit.contain,
-        ).image,
-        title: storeTitle(item),
-        footer: Column(
-          children: [
-            AppSizedBox.h1,
-            RatingBarIndicator(
-              rating: item.avgRating?.toDouble() ?? 0,
-              itemBuilder: (context, index) => const Icon(
-                Icons.star,
-                color: Colors.yellow,
-              ),
-              unratedColor: Colors.grey,
-              itemCount: 5,
-              itemSize: 15.sp,
-              direction: Axis.horizontal,
-            ),
-            AppSizedBox.h1,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CustomButton(
-                  width: 18,
-                  height: 5,
-                  radius: 1,
-                  fontsize: 9.sp,
-                  txtcolor: Colors.black,
-                  text: 'تفاصيل ',
-                  onTap: () {
-                    AppShow.animationDialog(context, StoreDetails(store: item));
-                  },
-                ),
-                CustomButton(
-                  width: 18,
-                  height: 5,
-                  radius: 1,
-                  fontsize: 9.sp,
-                  txtcolor: Colors.black,
-                  text: 'أضف تقييما',
-                  onTap: () {
-                    AppShow.animationDialog(context, AddProductReviewScreen(store: item));
-                  },
-                ),
-              ],
+    return InkWell(
+      onTap: () {
+        AppShow.animationDialog(context, StoreDetails(store: item));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(2.w),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: const Offset(0, 1), // changes position of shadow
             ),
           ],
+        ),
+        child: FillImageCard(
+          heightImage: 13.h,
+          width: 45.w,
+          imageProvider: Image.network(
+            item.image ?? '',
+            fit: BoxFit.contain,
+          ).image,
+          title: storeTitle(item),
+          footer: Column(
+            children: [
+              AppSizedBox.h1,
+              RatingBarIndicator(
+                rating: item.avgRating?.toDouble() ?? 0,
+                itemBuilder: (context, index) => const Icon(
+                  Icons.star,
+                  color: Colors.yellow,
+                ),
+                unratedColor: Colors.grey,
+                itemCount: 5,
+                itemSize: 15.sp,
+                direction: Axis.horizontal,
+              ),
+              AppSizedBox.h1,
+            ],
+          ),
         ),
       ),
     );

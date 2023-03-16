@@ -26,7 +26,8 @@ class DocumentHelper {
       pickedFile = File(filePickerResult.files.single.path!);
       var ext = pickedFile?.path.split('.').last;
       print(ext);
-      bool wrongExt = ext != 'jpg' && ext != 'pdf' && ext != 'png' && ext != 'jpeg';
+      bool wrongExt =
+          ext != 'jpg' && ext != 'pdf' && ext != 'png' && ext != 'jpeg';
       if (wrongExt) {
         isValid = false;
         return null;
@@ -34,7 +35,8 @@ class DocumentHelper {
         bool isImage = ext == 'jpg' || ext == 'png' || ext == 'jpeg';
         if (isImage) {
           isValid = true;
-          pickedFile = await compressFile(filePath: filePickerResult.files.single.path!);
+          pickedFile = pickedFile;
+          // pickedFile = await compressFile(filePath: filePickerResult.files.single.path!);
         }
 
         return pickedFile;
@@ -43,8 +45,8 @@ class DocumentHelper {
   }
 
   static Future<File> compressFile({required String filePath}) async {
-    File compressedFile =
-        await FlutterNativeImage.compressImage(filePath, quality: 50, percentage: 20);
+    File compressedFile = await FlutterNativeImage.compressImage(filePath,
+        quality: 50, percentage: 20);
     print(compressedFile.path);
     var compressedImage = await compressedFile.readAsBytes();
     var picked = await File(filePath).readAsBytes();
@@ -53,7 +55,8 @@ class DocumentHelper {
     return compressedFile;
   }
 
-  static Future<File?> pickImage(PickImageFromEnum type, BuildContext context) async {
+  static Future<File?> pickImage(
+      PickImageFromEnum type, BuildContext context) async {
     final XFile? photo;
     if (type == PickImageFromEnum.camera) {
       photo = await _imagepicker.pickImage(source: ImageSource.camera);
@@ -63,7 +66,10 @@ class DocumentHelper {
     if (photo == null) {
       return null;
     } else {
-      pickedImage = await compressFile(filePath: photo.path);
+      pickedFile = File(photo.path);
+
+      // pickedImage = await compressFile(filePath: photo.path);
+      pickedImage = pickedFile;
       Navigator.of(context, rootNavigator: false).pop();
 
       return pickedImage;
