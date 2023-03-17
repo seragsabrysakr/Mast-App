@@ -12,11 +12,13 @@ class TopStoresCubit extends Cubit<FlowState> {
   final HomeRepository homeRepository;
 
   TopStoresCubit(this.homeRepository)
-      : super(LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState));
+      : super(LoadingState(
+            stateRendererType: StateRendererType.fullScreenLoadingState));
   List<StoreModel> stores = [];
   int currentPage = 1;
 
-  static TopStoresCubit get(BuildContext context) => context.read<TopStoresCubit>();
+  static TopStoresCubit get(BuildContext context) =>
+      context.read<TopStoresCubit>();
 
   void getTopStores({StoreRequest? request, int pageKey = 1}) async {
     if (pageKey == 1) {
@@ -25,12 +27,14 @@ class TopStoresCubit extends Cubit<FlowState> {
     var req = request?.copyWith(
       skip: stores.length,
     );
-    emit(LoadingState(stateRendererType: StateRendererType.fullScreenLoadingState));
+    emit(LoadingState(
+        stateRendererType: StateRendererType.fullScreenLoadingState));
     Future.delayed(const Duration(seconds: 0), () {
       homeRepository
           .viewTopRated(skip: req!.skip, take: req.take, title: req.title)
           .then((value) => value.fold((failure) {
-                emit(ErrorState(StateRendererType.toastErrorState, failure.message));
+                emit(ErrorState(
+                    StateRendererType.toastErrorState, failure.message));
                 print("errorMessage: ${failure.message}");
               }, (data) {
                 print("getStores: ${data.data!.length}");

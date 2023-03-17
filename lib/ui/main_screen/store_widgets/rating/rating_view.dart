@@ -15,7 +15,8 @@ import 'package:mast/ui/main_screen/store_widgets/rating/rating_cubit.dart';
 
 class AddProductReviewScreen extends StatefulWidget {
   final StoreModel store;
-  const AddProductReviewScreen({Key? key, required this.store}) : super(key: key);
+  const AddProductReviewScreen({Key? key, required this.store})
+      : super(key: key);
 
   @override
   State<AddProductReviewScreen> createState() => _AddProductReviewScreenState();
@@ -116,7 +117,6 @@ class _AddProductReviewScreenState extends State<AddProductReviewScreen> {
             setState(() {
               rating = value;
             });
-            print(rating);
           },
         ),
         AppSizedBox.h1,
@@ -130,6 +130,7 @@ class _AddProductReviewScreenState extends State<AddProductReviewScreen> {
               if (value == null && value!.isEmpty) {
                 return 'الرجاء اضافة المحتوي ';
               }
+              return null;
             }),
         AppSizedBox.h1,
         CustomButton(

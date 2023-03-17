@@ -30,7 +30,8 @@ class HomeScreen extends StatelessWidget {
           onRefresh: () async {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               GetStoresCubit.get(context).getStores(request: request);
-              SpecialStoresCubit.get(context).getSpecialStores(request: request);
+              SpecialStoresCubit.get(context)
+                  .getSpecialStores(request: request);
               TopStoresCubit.get(context).getTopStores(request: request);
             });
           },
@@ -69,20 +70,23 @@ class HomeScreen extends StatelessWidget {
         });
   }
 
-  RequestBuilder<GetStoresCubit> buildTopRequestBuilder() {
-    return RequestBuilder<GetStoresCubit>(
+  RequestBuilder<TopStoresCubit> buildTopRequestBuilder() {
+    return RequestBuilder<TopStoresCubit>(
         maxContentHeight: 40.h,
         retry: (context, cubit) {},
         contentBuilder: (context, cubit) {
           List<StoreModel> stores = cubit.stores;
 
           return buildStoresList(
-              stores: stores, title: 'الاعلي تقييما', context: context, rout: const AllTopScreen());
+              stores: stores,
+              title: 'الاعلي تقييما',
+              context: context,
+              rout: const AllTopScreen());
         });
   }
 
-  RequestBuilder<GetStoresCubit> buildSpecialRequestBuilder() {
-    return RequestBuilder<GetStoresCubit>(
+  RequestBuilder<SpecialStoresCubit> buildSpecialRequestBuilder() {
+    return RequestBuilder<SpecialStoresCubit>(
         maxContentHeight: 30.h,
         retry: (context, cubit) {},
         contentBuilder: (context, cubit) {

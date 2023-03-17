@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_sized_box.dart';
 import 'package:mast/app/extensions.dart';
+import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
 import 'package:mast/data/model/home/store_model.dart';
 import 'package:mast/ui/componnents/app_show.dart';
@@ -48,6 +50,26 @@ class StoreDetails extends StatelessWidget {
                     buildChip('زيارة صفحة المتجر', onTap: () async {
                       await _launchInBrowser(store.url ?? '');
                     }),
+                    Column(
+                      children: [
+                        Text(
+                          'كوبون الخصم',
+                          style: AppTextStyle.getBoldStyle(color: Colors.black),
+                        ),
+                        buildChip(store.coupon ?? 'قريبا', onTap: () async {
+                          if (store.coupon != null) {
+                            Clipboard.setData(ClipboardData(text: store.coupon))
+                                .then((value) {
+                              popDialog(
+                                  context: context,
+                                  title: " تم نسخ الكوبون ",
+                                  content: store.coupon ?? '',
+                                  boxColor: Colors.yellowAccent);
+                            });
+                          }
+                        }),
+                      ],
+                    )
                   ],
                 ),
                 AppSizedBox.h2,
@@ -86,6 +108,23 @@ class StoreDetails extends StatelessWidget {
                   ),
                 ),
                 AppSizedBox.h1,
+                buildChip('اضيف بواسطة', onTap: () {}),
+                Column(
+                  children: [
+                    ClipOval(
+                      child: CircleAvatar(
+                          radius: 4.h,
+                          child: AppShow.buildImage(
+                              img: store.client?.image ?? '',
+                              width: 40.w,
+                              height: 12.6.h)),
+                    ),
+                    Text(
+                      store.client?.name ?? 'الادارة',
+                      style: AppTextStyle.getBoldStyle(color: Colors.black),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

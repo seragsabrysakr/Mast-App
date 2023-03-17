@@ -1,3 +1,5 @@
+import 'client_model.dart';
+
 class StoreModel {
   int? id;
   String? title;
@@ -6,12 +8,14 @@ class StoreModel {
   String? isActive;
   String? image;
   String? url;
+  String? coupon;
   String? createdAt;
   String? updatedAt;
   bool? special;
   String? ratingCount;
   double? avgRating;
   bool? userRating;
+  ClientModel? client;
   List<Ratings>? ratings;
 
   StoreModel(
@@ -22,11 +26,13 @@ class StoreModel {
       this.isActive,
       this.image,
       this.url,
+      this.coupon,
       this.createdAt,
       this.updatedAt,
       this.special,
       this.ratingCount,
       this.avgRating,
+      this.client,
       this.userRating,
       this.ratings});
 
@@ -38,10 +44,13 @@ class StoreModel {
     isActive = json['is_active'];
     image = json['image'];
     url = json['url'];
+    coupon = json['coupon'];
+    client =
+        json['client'] == null ? null : ClientModel.fromJson(json['client']);
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     special = json['special'];
-    ratingCount = json['rating_count'];
+    ratingCount = json['rating_count'].toString();
     avgRating = json['avgRating'].toDouble();
     userRating = json['user_rating'];
     if (json['ratings'] != null) {
@@ -61,6 +70,8 @@ class StoreModel {
     data['is_active'] = isActive;
     data['image'] = image;
     data['url'] = url;
+    data['coupon'] = coupon;
+    data['client'] = client;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     data['special'] = special;
