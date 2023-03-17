@@ -99,7 +99,7 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
       physics: const BouncingScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          childAspectRatio: .7,
+          childAspectRatio: .75,
           crossAxisSpacing: 3.w,
           mainAxisSpacing: 5.w),
       builderDelegate: PagedChildBuilderDelegate<StoreModel>(
@@ -152,7 +152,7 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
           ],
         ),
         child: FillImageCard(
-          heightImage: 13.h,
+          heightImage: 16.h,
           width: 45.w,
           imageProvider: Image.network(
             item.image ?? '',
@@ -162,16 +162,18 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
           footer: Column(
             children: [
               AppSizedBox.h1,
-              RatingBarIndicator(
-                rating: item.avgRating?.toDouble() ?? 0,
-                itemBuilder: (context, index) => const Icon(
-                  Icons.star,
-                  color: Colors.yellow,
+              Center(
+                child: RatingBarIndicator(
+                  rating: item.avgRating?.toDouble() ?? 0,
+                  itemBuilder: (context, index) => const Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
+                  unratedColor: Colors.grey,
+                  itemCount: 5,
+                  itemSize: 15.sp,
+                  direction: Axis.horizontal,
                 ),
-                unratedColor: Colors.grey,
-                itemCount: 5,
-                itemSize: 15.sp,
-                direction: Axis.horizontal,
               ),
               AppSizedBox.h1,
             ],

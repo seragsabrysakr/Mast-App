@@ -3,10 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:mast/app/app_colors.dart';
 import 'package:mast/app/app_sized_box.dart';
+import 'package:mast/app/di/di.dart';
 import 'package:mast/app/extensions.dart';
 import 'package:mast/app/state_renderer/state_renderer_impl.dart';
 import 'package:mast/app/text_style.dart';
 import 'package:mast/data/model/home/store_model.dart';
+import 'package:mast/data/storage/local/app_prefs.dart';
 import 'package:mast/ui/componnents/app_show.dart';
 import 'package:mast/ui/main_screen/store_widgets/rating/rating_view.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
@@ -85,8 +87,15 @@ class StoreDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     buildChip('تقييم المتجر', onTap: () {
-                      AppShow.animationDialog(
-                          context, AddProductReviewScreen(store: store));
+                      var isLogin=getIt<AppPreferences>().isUserLogin;
+                      if(isLogin){
+
+                        AppShow.animationDialog(
+                            context, AddProductReviewScreen(store: store));
+                      }else{
+                        popDialog(context: context, title: 'تنبية', content: 'سجل الدخول أولا', boxColor: Colors.red);
+                      }
+
                     }),
                     buildChip('عرض التقييمات', onTap: () {
                       AppShow.animationDialog(
